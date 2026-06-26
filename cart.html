@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sepetim | Uğur Böceği Pratik Ev Aletleri</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet" href="css/responsive.css">
+
+<link rel="stylesheet" href="css/animations.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<header>
+
+<div class="container">
+
+<div class="logo">
+
+<h1>🐞 UĞUR BÖCEĞİ</h1>
+
+<span>Pratik Ev Aletleri</span>
+
+</div>
+
+<nav>
+
+<ul>
+
+<li><a href="index.html">Ana Sayfa</a></li>
+
+<li><a href="products.html">Ürünler</a></li>
+
+<li><a href="cart.html" class="active">
+
+<i class="fa-solid fa-cart-shopping"></i>
+
+</a></li>
+
+</ul>
+
+</nav>
+
+</div>
+
+</header>
+
+<section class="page-title">
+
+<div class="container">
+
+<h1>Alışveriş Sepetim</h1>
+
+<p>Sepetinizde bulunan ürünleri kontrol edin.</p>
+
+</div>
+
+</section>
+
+<section class="cart-page">
+
+<div class="container">
+
+<div class="cart-wrapper">
+
+<div class="cart-items">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Ürün</th>
+
+<th>Fiyat</th>
+
+<th>Adet</th>
+
+<th>Toplam</th>
+
+<th></th>
+
+</tr>
+
+</thead>
+
+<tbody id="cartTable">
+
+<!-- JavaScript ürünleri buraya ekleyecek -->
+
+</tbody>
+
+</table>
+
+</div>
+
+<div class="cart-summary">
+
+<h2>Sipariş Özeti</h2>
+
+<div class="summary-row">
+
+<span>Ara Toplam</span>
+
+<strong id="subTotal">
+
+0 ₺
+
+</strong>
+
+</div>
+
+<div class="summary-row">
+
+<span>Kargo</span>
+
+<strong>
+
+Ücretsiz
+
+</strong>
+
+</div>
+
+<hr>
+
+<div class="summary-row total">
+
+<span>Genel Toplam</span>
+
+<strong id="grandTotal">
+
+0 ₺
+
+</strong>
+
+</div>
+
+<h3>Müşteri Bilgileri</h3>
+
+<input
+type="text"
+id="customerName"
+placeholder="Ad Soyad">
+
+<input
+type="tel"
+id="customerPhone"
+placeholder="Telefon">
+
+<textarea
+id="customerAddress"
+placeholder="Adres"></textarea>
+
+<textarea
+id="customerNote"
+placeholder="Sipariş Notu"></textarea>
+
+<button
+id="sendWhatsapp"
+class="btn">
+
+<i class="fa-brands fa-whatsapp"></i>
+
+Siparişi WhatsApp'tan Gönder
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<script src="js/cart.js"></script>
+
+</body>
+
+</html>
