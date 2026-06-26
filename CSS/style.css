@@ -1,0 +1,671 @@
+/* ==========================================================
+   UĞUR BÖCEĞİ PRATİK EV ALETLERİ
+   style.css
+========================================================== */
+
+/* GOOGLE FONT */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* RESET */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    font-family:'Poppins',sans-serif;
+
+    background:#0F172A;
+
+    color:#ffffff;
+
+    overflow-x:hidden;
+
+}
+
+/* LINK */
+
+a{
+
+    text-decoration:none;
+
+    color:white;
+
+}
+
+ul{
+
+    list-style:none;
+
+}
+
+/* CONTAINER */
+
+.container{
+
+    width:90%;
+
+    max-width:1400px;
+
+    margin:auto;
+
+}
+
+/* HEADER */
+
+header{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    z-index:999;
+
+    background:#111827;
+
+    backdrop-filter:blur(10px);
+
+    box-shadow:0 5px 20px rgba(0,0,0,.35);
+
+}
+
+header .container{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    height:85px;
+
+}
+
+/* LOGO */
+
+.logo h1{
+
+    color:#D40000;
+
+    font-size:32px;
+
+    font-weight:800;
+
+}
+
+.logo span{
+
+    color:#94A3B8;
+
+    font-size:13px;
+
+}
+
+/* MENU */
+
+nav ul{
+
+    display:flex;
+
+    gap:35px;
+
+}
+
+nav a{
+
+    transition:.3s;
+
+    font-weight:500;
+
+}
+
+nav a:hover{
+
+    color:#D40000;
+
+}
+
+/* ICONLAR */
+
+.header-icons{
+
+    display:flex;
+
+    gap:25px;
+
+    font-size:22px;
+
+}
+
+.header-icons i{
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.header-icons i:hover{
+
+    color:#D40000;
+
+}
+
+/* HERO */
+
+.hero{
+
+    padding-top:150px;
+
+    min-height:90vh;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    width:90%;
+
+    margin:auto;
+
+}
+
+.hero-left{
+
+    width:50%;
+
+}
+
+.hero-left h2{
+
+    font-size:65px;
+
+    font-weight:800;
+
+    line-height:80px;
+
+}
+
+.hero-left p{
+
+    margin-top:20px;
+
+    color:#CBD5E1;
+
+    font-size:18px;
+
+    line-height:30px;
+
+}
+
+/* BUTTON */
+
+.btn{
+
+    display:inline-block;
+
+    margin-top:35px;
+
+    background:#D40000;
+
+    color:white;
+
+    padding:16px 40px;
+
+    border-radius:50px;
+
+    font-size:18px;
+
+    transition:.4s;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-5px);
+
+    background:#ff0000;
+
+}
+
+/* HERO RESİM */
+
+.hero-right{
+
+    width:45%;
+
+    text-align:center;
+
+}
+
+.hero-right img{
+
+    width:100%;
+
+    animation:float 3s ease-in-out infinite;
+
+}
+/* ===========================================
+   KATEGORİLER
+=========================================== */
+
+.categories{
+
+    padding:100px 0;
+
+}
+
+.categories h2{
+
+    text-align:center;
+
+    font-size:40px;
+
+    margin-bottom:60px;
+
+}
+
+.category-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:30px;
+
+}
+
+.category{
+
+    background:#1E293B;
+
+    border-radius:20px;
+
+    text-align:center;
+
+    padding:35px;
+
+    transition:.4s;
+
+    cursor:pointer;
+
+    border:1px solid rgba(255,255,255,.05);
+
+}
+
+.category:hover{
+
+    transform:translateY(-12px);
+
+    background:#D40000;
+
+    box-shadow:0 15px 35px rgba(212,0,0,.35);
+
+}
+
+.category i{
+
+    font-size:45px;
+
+    margin-bottom:20px;
+
+}
+
+.category p{
+
+    font-size:18px;
+
+    font-weight:600;
+
+}
+
+/* ===========================================
+   ÜRÜNLER
+=========================================== */
+
+.products{
+
+    padding:100px 0;
+
+}
+
+.products h2{
+
+    text-align:center;
+
+    font-size:42px;
+
+    margin-bottom:70px;
+
+}
+
+.product-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:35px;
+
+}
+
+.product-card{
+
+    position:relative;
+
+    background:#1E293B;
+
+    border-radius:25px;
+
+    overflow:hidden;
+
+    transition:.4s;
+
+    padding:25px;
+
+}
+
+.product-card:hover{
+
+    transform:translateY(-12px);
+
+    box-shadow:0 20px 50px rgba(0,0,0,.45);
+
+}
+
+.product-card img{
+
+    width:100%;
+
+    height:250px;
+
+    object-fit:contain;
+
+}
+
+.product-card h3{
+
+    margin-top:20px;
+
+    margin-bottom:15px;
+
+    font-size:22px;
+
+}
+
+.price{
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+    margin-bottom:15px;
+
+}
+
+.price del{
+
+    color:#94A3B8;
+
+}
+
+.price strong{
+
+    color:#22C55E;
+
+    font-size:25px;
+
+}
+
+.discount{
+
+    position:absolute;
+
+    top:20px;
+
+    left:20px;
+
+    background:#D40000;
+
+    color:#fff;
+
+    padding:8px 15px;
+
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:700;
+
+}
+
+.stars{
+
+    color:#FFD700;
+
+    margin-bottom:20px;
+
+    font-size:18px;
+
+}
+
+.product-card .btn{
+
+    width:100%;
+
+    text-align:center;
+
+}
+
+/* ===========================================
+   NEDEN BİZ
+=========================================== */
+
+.why{
+
+    padding:100px 0;
+
+}
+
+.why h2{
+
+    text-align:center;
+
+    font-size:42px;
+
+    margin-bottom:60px;
+
+}
+
+.why-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:30px;
+
+}
+
+.why-box{
+
+    background:#1E293B;
+
+    padding:40px;
+
+    border-radius:25px;
+
+    text-align:center;
+
+    transition:.4s;
+
+}
+
+.why-box:hover{
+
+    transform:translateY(-10px);
+
+    background:#D40000;
+
+}
+
+.why-box h3{
+
+    margin:20px 0;
+
+    font-size:24px;
+
+}
+
+.why-box p{
+
+    color:#CBD5E1;
+
+    line-height:28px;
+
+}
+
+/* ===========================================
+   FOOTER
+=========================================== */
+
+footer{
+
+    background:#111827;
+
+    padding:70px 0 30px;
+
+    margin-top:80px;
+
+}
+
+.footer-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:40px;
+
+}
+
+.footer-grid h3{
+
+    margin-bottom:20px;
+
+}
+
+.footer-grid p{
+
+    margin:10px 0;
+
+    color:#CBD5E1;
+
+    cursor:pointer;
+
+}
+
+.footer-grid p:hover{
+
+    color:#D40000;
+
+}
+
+.copyright{
+
+    text-align:center;
+
+    margin-top:50px;
+
+    padding-top:25px;
+
+    border-top:1px solid rgba(255,255,255,.08);
+
+    color:#94A3B8;
+
+}
+
+/* ===========================================
+   WHATSAPP
+=========================================== */
+
+.whatsapp{
+
+    position:fixed;
+
+    right:25px;
+
+    bottom:25px;
+
+    width:70px;
+
+    height:70px;
+
+    border-radius:50%;
+
+    background:#25D366;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:35px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+    z-index:999;
+
+    transition:.3s;
+
+}
+
+.whatsapp:hover{
+
+    transform:scale(1.1);
+
+}
+
+/* ===========================================
+   FLOAT ANİMASYONU
+=========================================== */
+
+@keyframes float{
+
+    0%{
+
+        transform:translateY(0);
+
+    }
+
+    50%{
+
+        transform:translateY(-18px);
+
+    }
+
+    100%{
+
+        transform:translateY(0);
+
+    }
+
+}
