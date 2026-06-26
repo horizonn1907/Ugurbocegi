@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Admin Paneli | Uğur Böceği</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<link rel="stylesheet" href="css/admin.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="admin-login" id="loginPage">
+
+<div class="login-box">
+
+<h1>🐞</h1>
+
+<h2>Uğur Böceği Yönetim Paneli</h2>
+
+<input
+type="password"
+id="adminPassword"
+placeholder="Yönetici Şifresi">
+
+<button id="loginButton">
+
+Giriş Yap
+
+</button>
+
+<p id="loginError"></p>
+
+</div>
+
+</div>
+
+<div class="dashboard" id="dashboard" style="display:none;">
+
+<aside>
+
+<h2>🐞 Yönetim</h2>
+
+<ul>
+
+<li class="active">
+<i class="fa-solid fa-house"></i>
+Gösterge Paneli
+</li>
+
+<li>
+<i class="fa-solid fa-box"></i>
+Ürünler
+</li>
+
+<li>
+<i class="fa-solid fa-tags"></i>
+Kategoriler
+</li>
+
+<li>
+<i class="fa-solid fa-cart-shopping"></i>
+Siparişler
+</li>
+
+<li>
+<i class="fa-solid fa-gear"></i>
+Ayarlar
+</li>
+
+<li id="logout">
+<i class="fa-solid fa-right-from-bracket"></i>
+Çıkış
+</li>
+
+</ul>
+
+</aside>
+
+<main>
+
+<h1>Ürün Yönetimi</h1>
+
+<div class="cards">
+
+<div class="card">
+
+<h3>Toplam Ürün</h3>
+
+<h2 id="productCount">
+
+0
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<h3>Siparişler</h3>
+
+<h2>
+
+0
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<h3>Kategoriler</h3>
+
+<h2>
+
+0
+
+</h2>
+
+</div>
+
+</div>
+
+<h2>Yeni Ürün Ekle</h2>
+
+<form id="productForm">
+
+<input
+type="text"
+id="productName"
+placeholder="Ürün Adı"
+required>
+
+<input
+type="number"
+id="productPrice"
+placeholder="Fiyat"
+required>
+
+<input
+type="text"
+id="productCategory"
+placeholder="Kategori"
+required>
+
+<input
+type="url"
+id="productImage"
+placeholder="Resim URL">
+
+<textarea
+id="productDescription"
+placeholder="Ürün Açıklaması"></textarea>
+
+<button type="submit">
+
+Ürünü Kaydet
+
+</button>
+
+</form>
+
+<h2>Ürün Listesi</h2>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Resim</th>
+
+<th>Ürün</th>
+
+<th>Kategori</th>
+
+<th>Fiyat</th>
+
+<th>İşlem</th>
+
+</tr>
+
+</thead>
+
+<tbody id="productTable">
+
+</tbody>
+
+</table>
+
+</main>
+
+</div>
+
+<script src="js/admin.js"></script>
+
+</body>
+
+</html>
