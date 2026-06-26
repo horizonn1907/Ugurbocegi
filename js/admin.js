@@ -246,3 +246,193 @@ function editProduct(id) {
     });
 
 }
+
+/* ==========================================
+   ÜRÜN ARAMA
+========================================== */
+
+const searchInput = document.getElementById("productSearch");
+
+if (searchInput) {
+
+    searchInput.addEventListener("keyup", searchProducts);
+
+}
+
+function searchProducts() {
+
+    const text = searchInput.value.toLowerCase();
+
+    const rows = productTable.querySelectorAll("tr");
+
+    rows.forEach(row => {
+
+        if (row.innerText.toLowerCase().includes(text)) {
+
+            row.style.display = "";
+
+        } else {
+
+            row.style.display = "none";
+
+        }
+
+    });
+
+}
+
+/* ==========================================
+   KATEGORİ FİLTRESİ
+========================================== */
+
+function filterCategory(category) {
+
+    const rows = productTable.querySelectorAll("tr");
+
+    rows.forEach(row => {
+
+        if (
+            category === "Tümü" ||
+            row.innerText.includes(category)
+        ) {
+
+            row.style.display = "";
+
+        } else {
+
+            row.style.display = "none";
+
+        }
+
+    });
+
+}
+
+/* ==========================================
+   STOK DURUMU
+========================================== */
+
+function toggleStock(id) {
+
+    const product = products.find(p => p.id === id);
+
+    if (!product) return;
+
+    product.stock = !product.stock;
+
+    saveProducts();
+
+    renderProducts();
+
+}
+
+/* ==========================================
+   ÖNE ÇIKAN ÜRÜN
+========================================== */
+
+function toggleFeatured(id) {
+
+    const product = products.find(p => p.id === id);
+
+    if (!product) return;
+
+    product.featured = !product.featured;
+
+    saveProducts();
+
+    renderProducts();
+
+}
+
+/* ==========================================
+   YEDEKLE
+========================================== */
+
+function exportProducts() {
+
+    const data = JSON.stringify(products, null, 2);
+
+    const blob = new Blob([data], {
+
+        type: "application/json"
+
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.download = "urunler.json";
+
+    link.click();
+
+    URL.revokeObjectURL(url);
+
+}
+
+/* ==========================================
+   YEDEK YÜKLE
+========================================== */
+
+function importProducts(event) {
+
+    const file = event.target.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+
+        try {
+
+            products = JSON.parse(e.target.result);
+
+            saveProducts();
+
+            renderProducts();
+
+            alert("Yedek başarıyla yüklendi.");
+
+        } catch {
+
+            alert("Geçersiz JSON dosyası.");
+
+        }
+
+    };
+
+    reader.readAsText(file);
+
+}
+
+/* ==========================================
+   PANEL İSTATİSTİKLERİ
+========================================== */
+
+function updateDashboard() {
+
+    productCount.textContent = products.length;
+
+    const stockCount = products.filter(p => p.stock).length;
+
+    console.log("Stoktaki ürün:", stockCount);
+
+}
+
+/* renderProducts fonksiyonunu güncelle */
+const oldRenderProducts = renderProducts;
+
+renderProducts = function () {
+
+    oldRenderProducts();
+
+    updateDashboard();
+
+};
+
+renderProducts();
+
+console.log("Admin Panel Bölüm 3 yüklendi.");
