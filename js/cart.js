@@ -367,3 +367,42 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 console.log("Cart.js başarıyla yüklendi.");
+/* ==========================================
+   ANASAYFADAN SEPETE EKLE
+========================================== */
+
+window.addToCart = function (id, name, price, image) {
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const existingProduct = cart.find(item => item.id === id);
+
+    if (existingProduct) {
+
+        existingProduct.quantity++;
+
+    } else {
+
+        cart.push({
+            id: id,
+            name: name,
+            price: Number(price),
+            image: image,
+            quantity: 1
+        });
+
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    alert("✅ Ürün sepete eklendi.");
+
+    // Sayfadaki sepet sayısını güncelle (varsa)
+    const cartCount = document.getElementById("cartCount");
+
+    if (cartCount) {
+        const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = total;
+    }
+
+};
