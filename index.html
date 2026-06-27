@@ -1,35 +1,18 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Uğur Böceği Pratik Ev Aletleri</title>
 
-<meta name="description" content="Uğur Böceği Pratik Ev Aletleri - Küçük ev aletlerinde kaliteli ve uygun fiyatlı alışveriş.">
-
-<meta name="keywords" content="airfryer, blender, tost makinesi, kahve makinesi, elektrikli süpürge">
-
-<meta name="author" content="Uğur Böceği">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
 <link rel="stylesheet" href="css/style.css">
 
-<link rel="stylesheet" href="css/responsive.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="css/animations.css">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 </head>
 
@@ -37,45 +20,35 @@
 
 <header>
 
-<div class="container">
-
 <div class="logo">
 
-<h1>🐞 UĞUR BÖCEĞİ</h1>
-
-<span>Pratik Ev Aletleri</span>
+🐞 Uğur Böceği
 
 </div>
 
 <nav>
 
-<ul>
+<a href="index.html">Anasayfa</a>
 
-<li><a href="#">Ana Sayfa</a></li>
+<a href="products.html">Ürünler</a>
 
-<li><a href="#">Ürünler</a></li>
+<a href="#kampanya">Kampanyalar</a>
 
-<li><a href="#">Kampanyalar</a></li>
+<a href="#iletisim">İletişim</a>
 
-<li><a href="#">Hakkımızda</a></li>
-
-<li><a href="#">İletişim</a></li>
-
-</ul>
+<a href="admin.html">Admin</a>
 
 </nav>
 
-<div class="header-icons">
+<div class="icons">
 
-<i class="fa-solid fa-magnifying-glass"></i>
-
-<i class="fa-regular fa-heart"></i>
+<a href="cart.html">
 
 <i class="fa-solid fa-cart-shopping"></i>
 
-<i class="fa-regular fa-user"></i>
+<span id="cartCount">0</span>
 
-</div>
+</a>
 
 </div>
 
@@ -83,31 +56,29 @@
 
 <section class="hero">
 
-<div class="hero-left">
+<div class="hero-text">
 
-<h2>Kaliteli Ürün</h2>
+<h1>
 
-<h2>Uygun Fiyat</h2>
+Ev İşlerini Kolaylaştıran
 
-<h2>Hızlı Teslimat</h2>
+<br>
+
+Pratik Ev Aletleri
+
+</h1>
 
 <p>
 
-Uğur Böceği Pratik Ev Aletleri ile güvenli alışveriş.
+Kaliteli ürünleri uygun fiyatlarla keşfet.
 
 </p>
 
-<a href="#" class="btn">
+<a href="products.html" class="btn">
 
-Kampanyaları İncele
+Alışverişe Başla
 
 </a>
-
-</div>
-
-<div class="hero-right">
-
-<img src="images/airfryer.png" alt="Airfryer">
 
 </div>
 
@@ -117,346 +88,108 @@ Kampanyaları İncele
 
 <h2>Kategoriler</h2>
 
-<div class="category-grid">
+<div class="categoryGrid">
 
-<div class="category">
+<div>Airfryer</div>
 
-<i class="fa-solid fa-blender"></i>
+<div>Blender</div>
 
-<p>Blender</p>
+<div>Kahve Makinesi</div>
 
-</div>
+<div>Süpürge</div>
 
-<div class="category">
+<div>Tost Makinesi</div>
 
-☕
+<div>Ütü</div>
 
-<p>Kahve</p>
+<div>Robot Süpürge</div>
 
-</div>
-
-<div class="category">
-
-🧹
-
-<p>Süpürge</p>
-
-</div>
-
-<div class="category">
-
-🍞
-
-<p>Tost Makinesi</p>
-
-</div>
-
-<div class="category">
-
-🍟
-
-<p>Airfryer</p>
-
-</div>
-
-<div class="category">
-
-🫖
-
-<p>Çaycı</p>
-
-</div>
-
-<div class="category">
-
-👕
-
-<p>Ütü</p>
-
-</div>
-
-<div class="category">
-
-⚡
-
-<p>Diğer</p>
-
-</div>
+<div>Çay Makinesi</div>
 
 </div>
 
 </section>
-<!-- EN ÇOK SATANLAR -->
 
-<section class="products">
+<section>
 
-    <div class="container">
+<h2 class="title">
 
-        <h2>En Çok Satanlar</h2>
-<div class="product-grid" id="productGrid">
+Ürünler
 
-    <!-- Firebase'den gelen ürünler buraya eklenecek -->
+</h2>
+
+<div id="productGrid">
 
 </div>
 
-            <div class="product-card">
+</section>
 
-                <span class="discount">%20 İNDİRİM</span>
+<section id="kampanya">
 
-                <img src="images/airfryer.png" alt="Airfryer">
+<h2>
 
-                <h3>Airfryer XL</h3>
+Günün Kampanyası
 
-                <div class="price">
+</h2>
 
-                    <del>7.999 ₺</del>
+<p>
 
-                    <strong>6.399 ₺</strong>
+Her hafta yeni indirimler.
 
-                </div>
-
-                <div class="stars">
-
-                    ★★★★★
-
-                </div>
-
-                <button class="btn">
-
-                    Sepete Ekle
-
-                </button>
-
-            </div>
-
-            <div class="product-card">
-
-                <span class="discount">%15 İNDİRİM</span>
-
-                <img src="images/blender.png" alt="Blender">
-
-                <h3>Blender Seti</h3>
-
-                <div class="price">
-
-                    <del>2.499 ₺</del>
-
-                    <strong>2.099 ₺</strong>
-
-                </div>
-
-                <div class="stars">
-
-                    ★★★★★
-
-                </div>
-
-                <button class="btn">
-
-                    Sepete Ekle
-
-                </button>
-
-            </div>
-
-            <div class="product-card">
-
-                <span class="discount">%10 İNDİRİM</span>
-
-                <img src="images/toast.png" alt="Tost">
-
-                <h3>Tost Makinesi</h3>
-
-                <div class="price">
-
-                    <del>3.299 ₺</del>
-
-                    <strong>2.999 ₺</strong>
-
-                </div>
-
-                <div class="stars">
-
-                    ★★★★★
-
-                </div>
-
-                <button class="btn">
-
-                    Sepete Ekle
-
-                </button>
-
-            </div>
-
-            <div class="product-card">
-
-                <span class="discount">%25 İNDİRİM</span>
-
-                <img src="images/vacuum.png" alt="Süpürge">
-
-                <h3>Dikey Süpürge</h3>
-
-                <div class="price">
-
-                    <del>8.999 ₺</del>
-
-                    <strong>6.799 ₺</strong>
-
-                </div>
-
-                <div class="stars">
-
-                    ★★★★★
-
-                </div>
-
-                <button class="btn">
-
-                    Sepete Ekle
-
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
+</p>
 
 </section>
 
-<!-- NEDEN BİZ -->
+<section id="iletisim">
 
-<section class="why">
+<h2>
 
-    <div class="container">
+İletişim
 
-        <h2>Neden Uğur Böceği?</h2>
+</h2>
 
-        <div class="why-grid">
+<p>
 
-            <div class="why-box">
+📞 0555 394 72 88
 
-                🚚
+</p>
 
-                <h3>Hızlı Kargo</h3>
+<p>
 
-                <p>Aynı gün gönderim.</p>
+📍 Bolu
 
-            </div>
+</p>
 
-            <div class="why-box">
+<a
 
-                🛡️
+class="whatsapp"
 
-                <h3>2 Yıl Garanti</h3>
+target="_blank"
 
-                <p>Garantili ürünler.</p>
+href="https://wa.me/905553947288">
 
-            </div>
+WhatsApp
 
-            <div class="why-box">
-
-                💳
-
-                <h3>Güvenli Alışveriş</h3>
-
-                <p>SSL korumalı ödeme.</p>
-
-            </div>
-
-            <div class="why-box">
-
-                📱
-
-                <h3>WhatsApp Destek</h3>
-
-                <p>7/24 destek.</p>
-
-            </div>
-
-        </div>
-
-    </div>
+</a>
 
 </section>
-
-<!-- FOOTER -->
 
 <footer>
 
-<div class="container footer-grid">
+© 2026
 
-<div>
-
-<h3>Kurumsal</h3>
-
-<p>Hakkımızda</p>
-
-<p>Kampanyalar</p>
-
-<p>Blog</p>
-
-</div>
-
-<div>
-
-<h3>Müşteri Hizmetleri</h3>
-
-<p>İade</p>
-
-<p>Garanti</p>
-
-<p>Gizlilik</p>
-
-</div>
-
-<div>
-
-<h3>İletişim</h3>
-
-<p>📞 0555 394 72 88</p>
-
-<p>✉ info@ugurbocegi.com</p>
-
-</div>
-
-<div>
-
-<h3>Sosyal Medya</h3>
-
-<p>Instagram</p>
-
-<p>Facebook</p>
-
-<p>WhatsApp</p>
-
-</div>
-
-</div>
-
-<div class="copyright">
-
-© 2026 Uğur Böceği Pratik Ev Aletleri
-
-</div>
+Uğur Böceği Pratik Ev Aletleri
 
 </footer>
 
-<a class="whatsapp"
+<script type="module" src="js/firebase.js"></script>
 
-href="https://wa.me/905553947288"
+<script type="module" src="js/products.js"></script>
 
-target="_blank">
-
-<i class="fa-brands fa-whatsapp"></i>
-
-</a>
+<script src="js/cart.js"></script>
 
 <script src="js/app.js"></script>
 
 </body>
 
 </html>
-<script type="module" src="js/firebase.js"></script>
-<script type="module" src="js/products.js"></script>
