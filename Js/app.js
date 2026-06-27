@@ -1,255 +1,94 @@
-/* ===========================================
-   UĞUR BÖCEĞİ PRATİK EV ALETLERİ
-   app.js
-===========================================*/
+// =======================================
+// UĞUR BÖCEĞİ PRATİK EV ALETLERİ
+// APP.JS
+// =======================================
 
-console.log("Uğur Böceği Store Başlatıldı.");
-
-/* ===========================
-   SAYFA YÜKLENİNCE
-=========================== */
-
-window.addEventListener("load", () => {
-
-    document.body.classList.add("loaded");
-
+// Sayfa açıldığında çalışır
+document.addEventListener("DOMContentLoaded", () => {
+    updateCartCount();
+    smoothScroll();
 });
 
-/* ===========================
-   HEADER GÖLGESİ
-=========================== */
+// -----------------------------
+// Sepet Sayısını Güncelle
+// -----------------------------
+function updateCartCount() {
 
-const header = document.querySelector("header");
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-window.addEventListener("scroll", () => {
+    const count = cart.reduce((total, item) => {
+        return total + item.quantity;
+    }, 0);
 
-    if (window.scrollY > 50) {
+    const badge = document.getElementById("cartCount");
 
-        header.style.background = "#0B1220";
-        header.style.boxShadow = "0 10px 25px rgba(0,0,0,.35)";
-
-    } else {
-
-        header.style.background = "#111827";
-        header.style.boxShadow = "none";
-
+    if (badge) {
+        badge.textContent = count;
     }
 
-});
+}
 
-/* ===========================
-   ÜRÜN KARTI ANİMASYONU
-=========================== */
+// -----------------------------
+// Sayfalar arası yumuşak geçiş
+// -----------------------------
+function smoothScroll() {
 
-const cards = document.querySelectorAll(".product-card");
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
 
-cards.forEach(card => {
+        link.addEventListener("click", function (e) {
 
-    card.addEventListener("mouseenter", () => {
+            const target = document.querySelector(this.getAttribute("href"));
 
-        card.style.transform = "translateY(-12px) scale(1.03)";
+            if (target) {
 
-    });
+                e.preventDefault();
 
-    card.addEventListener("mouseleave", () => {
+                target.scrollIntoView({
+                    behavior: "smooth"
+                });
 
-        card.style.transform = "translateY(0) scale(1)";
+            }
 
-    });
-
-});
-
-/* ===========================
-   KATEGORİLER
-=========================== */
-
-const categories = document.querySelectorAll(".category");
-
-categories.forEach(item => {
-
-    item.addEventListener("click", () => {
-
-        item.classList.toggle("active");
+        });
 
     });
-
-});
-
-/* ===========================
-   BUTON EFEKTİ
-=========================== */
-
-const buttons = document.querySelectorAll(".btn");
-
-buttons.forEach(btn => {
-
-    btn.addEventListener("click", () => {
-
-        btn.style.transform = "scale(.95)";
-
-        setTimeout(() => {
-
-            btn.style.transform = "scale(1)";
-
-        },150);
-
-    });
-
-});
-
-/* ===========================
-   FAVORİLER
-=========================== */
-
-let favorites = [];
-
-document.querySelectorAll(".fa-heart").forEach(icon=>{
-
-icon.addEventListener("click",()=>{
-
-icon.classList.toggle("fa-solid");
-
-icon.classList.toggle("fa-regular");
-
-});
-
-});
-
-/* ===========================
-   SEPET
-=========================== */
-
-let cart=[];
-
-document.querySelectorAll(".product-card .btn").forEach(button=>{
-
-button.addEventListener("click",()=>{
-
-alert("Ürün sepete eklendi.");
-
-});
-
-});
-
-/* ===========================
-   SCROLL ANİMASYONU
-=========================== */
-
-const observer = new IntersectionObserver((entries)=>{
-
-entries.forEach(entry=>{
-
-if(entry.isIntersecting){
-
-entry.target.classList.add("fade-up");
 
 }
 
-});
+// -----------------------------
+// Para formatı
+// -----------------------------
+window.formatPrice = function (price) {
 
-});
-
-document.querySelectorAll(".product-card,.category,.why-box").forEach(el=>{
-
-observer.observe(el);
-
-});
-
-/* ===========================
-   WHATSAPP
-=========================== */
-
-const whatsapp=document.querySelector(".whatsapp");
-
-if(whatsapp){
-
-whatsapp.addEventListener("mouseenter",()=>{
-
-whatsapp.style.transform="scale(1.15)";
-
-});
-
-whatsapp.addEventListener("mouseleave",()=>{
-
-whatsapp.style.transform="scale(1)";
-
-});
+    return Number(price).toLocaleString("tr-TR") + " ₺";
 
 }
 
-/* ===========================
-   HERO PARALLAX
-=========================== */
+// -----------------------------
+// Bildirim
+// -----------------------------
+window.showMessage = function (message) {
 
-window.addEventListener("mousemove",(e)=>{
+    const toast = document.createElement("div");
 
-const image=document.querySelector(".hero-right img");
+    toast.innerText = message;
 
-if(!image) return;
+    toast.style.position = "fixed";
+    toast.style.bottom = "20px";
+    toast.style.right = "20px";
+    toast.style.background = "#d40000";
+    toast.style.color = "#fff";
+    toast.style.padding = "15px 25px";
+    toast.style.borderRadius = "8px";
+    toast.style.zIndex = "99999";
+    toast.style.boxShadow = "0 8px 20px rgba(0,0,0,.25)";
 
-const x=(window.innerWidth/2-e.pageX)/40;
+    document.body.appendChild(toast);
 
-const y=(window.innerHeight/2-e.pageY)/40;
+    setTimeout(() => {
 
-image.style.transform=`translate(${x}px,${y}px)`;
+        toast.remove();
 
-});
-
-/* ===========================
-   YUKARI ÇIK
-=========================== */
-
-const goTop=document.createElement("div");
-
-goTop.innerHTML="⬆";
-
-goTop.className="goTop";
-
-document.body.appendChild(goTop);
-
-goTop.style.cssText=`
-position:fixed;
-right:25px;
-bottom:110px;
-width:55px;
-height:55px;
-background:#D40000;
-color:#fff;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:50%;
-cursor:pointer;
-font-size:22px;
-opacity:0;
-transition:.3s;
-z-index:999;
-`;
-
-window.addEventListener("scroll",()=>{
-
-if(window.scrollY>300){
-
-goTop.style.opacity="1";
-
-}else{
-
-goTop.style.opacity="0";
+    }, 2500);
 
 }
-
-});
-
-goTop.addEventListener("click",()=>{
-
-window.scrollTo({
-
-top:0,
-
-behavior:"smooth"
-
-});
-
-});
-
-console.log("App.js başarıyla yüklendi.");
