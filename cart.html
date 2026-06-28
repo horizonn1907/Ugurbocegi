@@ -1,22 +1,17 @@
+```html
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
 
 <meta charset="UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Sepetim | Uğur Böceği Pratik Ev Aletleri</title>
+<title>Sepetim | Uğur Böceği</title>
 
 <link rel="stylesheet" href="css/style.css">
 
-<link rel="stylesheet" href="css/responsive.css">
-
-<link rel="stylesheet" href="css/animations.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 </head>
 
@@ -28,27 +23,15 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 
 <div class="logo">
 
-<h1>🐞 UĞUR BÖCEĞİ</h1>
-
-<span>Pratik Ev Aletleri</span>
+🐞 Uğur Böceği
 
 </div>
 
 <nav>
 
-<ul>
+<a href="index.html">Anasayfa</a>
 
-<li><a href="index.html">Ana Sayfa</a></li>
-
-<li><a href="products.html">Ürünler</a></li>
-
-<li><a href="cart.html" class="active">
-
-<i class="fa-solid fa-cart-shopping"></i>
-
-</a></li>
-
-</ul>
+<a href="cart.html">Sepet</a>
 
 </nav>
 
@@ -56,138 +39,57 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 
 </header>
 
-<section class="page-title">
+<section class="products">
 
-<div class="container">
+<h2>
 
-<h1>Alışveriş Sepetim</h1>
+Sepetim
 
-<p>Sepetinizde bulunan ürünleri kontrol edin.</p>
+</h2>
 
-</div>
-
-</section>
-
-<section class="cart-page">
-
-<div class="container">
-
-<div class="cart-wrapper">
-
-<div class="cart-items">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>Ürün</th>
-
-<th>Fiyat</th>
-
-<th>Adet</th>
-
-<th>Toplam</th>
-
-<th></th>
-
-</tr>
-
-</thead>
-
-<tbody id="cartTable">
-
-<!-- JavaScript ürünleri buraya ekleyecek -->
-
-</tbody>
-
-</table>
+<div id="cartItems">
 
 </div>
 
-<div class="cart-summary">
+<div style="text-align:center;margin-top:30px;">
 
-<h2>Sipariş Özeti</h2>
+<h2>
 
-<div class="summary-row">
+Toplam :
 
-<span>Ara Toplam</span>
-
-<strong id="subTotal">
+<span id="cartTotal">
 
 0 ₺
 
-</strong>
+</span>
 
-</div>
+</h2>
 
-<div class="summary-row">
-
-<span>Kargo</span>
-
-<strong>
-
-Ücretsiz
-
-</strong>
-
-</div>
-
-<hr>
-
-<div class="summary-row total">
-
-<span>Genel Toplam</span>
-
-<strong id="grandTotal">
-
-0 ₺
-
-</strong>
-
-</div>
-
-<h3>Müşteri Bilgileri</h3>
-
-<input
-type="text"
-id="customerName"
-placeholder="Ad Soyad">
-
-<input
-type="tel"
-id="customerPhone"
-placeholder="Telefon">
-
-<textarea
-id="customerAddress"
-placeholder="Adres"></textarea>
-
-<textarea
-id="customerNote"
-placeholder="Sipariş Notu"></textarea>
+<br>
 
 <button
-id="sendWhatsapp"
+id="whatsappBtn"
 class="btn">
 
-<i class="fa-brands fa-whatsapp"></i>
-
-Siparişi WhatsApp'tan Gönder
+WhatsApp Siparişi Oluştur
 
 </button>
 
 </div>
 
-</div>
-
-</div>
-
 </section>
+
+<footer>
+
+© 2026 Uğur Böceği Pratik Ev Aletleri
+
+</footer>
+
+<script src="js/app.js"></script>
 
 <script src="js/cart.js"></script>
 
 </body>
 
 </html>
+```
