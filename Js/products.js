@@ -1,59 +1,49 @@
-// =======================================
+// =====================================
 // UĞUR BÖCEĞİ PRATİK EV ALETLERİ
 // PRODUCTS.JS
-// =======================================
+// =====================================
 
-const productGrid = document.getElementById("productGrid");
+// Varsayılan ürünler
+const defaultProducts = [
+{
+id:1,
+name:"Airfryer XL",
+price:5999,
+image:"https://images.unsplash.com/photo-1586201375761-83865001e31b?w=600",
+category:"Airfryer"
+},
+{
+id:2,
+name:"Blender Seti",
+price:2499,
+image:"https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=600",
+category:"Blender"
+},
+{
+id:3,
+name:"Robot Süpürge",
+price:8999,
+image:"https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600",
+category:"Robot Süpürge"
+}
+];
 
-// Admin panelinden eklenen ürünleri oku
-let products = JSON.parse(localStorage.getItem("products")) || [];
-
-// İlk açılışta örnek ürünler ekle
-if (products.length === 0) {
-
-    products = [
-
-        {
-            id: 1,
-            name: "Airfryer XL",
-            category: "Airfryer",
-            price: 5999,
-            image: "images/airfryer.jpg"
-        },
-
-        {
-            id: 2,
-            name: "Blender Seti",
-            category: "Blender",
-            price: 2499,
-            image: "images/blender.jpg"
-        },
-
-        {
-            id: 3,
-            name: "Robot Süpürge",
-            category: "Robot Süpürge",
-            price: 8999,
-            image: "images/robot.jpg"
-        }
-
-    ];
-
-    localStorage.setItem("products", JSON.stringify(products));
-
+// İlk açılışta ürünleri oluştur
+if(localStorage.getItem("products")==null){
+localStorage.setItem("products",JSON.stringify(defaultProducts));
 }
 
-drawProducts();
+const products=JSON.parse(localStorage.getItem("products"))||[];
 
-function drawProducts() {
+const productGrid=document.getElementById("productGrid");
 
-    if (!productGrid) return;
+if(productGrid){
 
-    productGrid.innerHTML = "";
+productGrid.innerHTML="";
 
-    products.forEach(product => {
+products.forEach(product=>{
 
-        productGrid.innerHTML += `
+productGrid.innerHTML+=`
 
 <div class="product-card">
 
@@ -79,46 +69,44 @@ Sepete Ekle
 
 `;
 
-    });
+});
 
 }
 
-window.addToCart = function(id){
+// -------------------------
+// Sepete Ekle
+// -------------------------
 
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+function addToCart(id){
 
-    const product = products.find(p=>p.id==id);
+const product=products.find(x=>x.id==id);
 
-    const existing = cart.find(i=>i.id==id);
+let cart=JSON.parse(localStorage.getItem("cart"))||[];
 
-    if(existing){
+const index=cart.findIndex(x=>x.id==id);
 
-        existing.quantity++;
+if(index==-1){
 
-    }else{
+cart.push({
 
-        cart.push({
+...product,
 
-            ...product,
+quantity:1
 
-            quantity:1
+});
 
-        });
+}else{
 
-    }
-
-    localStorage.setItem("cart",JSON.stringify(cart));
-
-    showMessage("Ürün sepete eklendi.");
-
-    const total = cart.reduce((a,b)=>a+b.quantity,0);
-
-    const badge=document.getElementById("cartCount");
-
-    if(badge){
-
-        badge.innerText=total;
-
-    }
+cart[index].quantity++;
 
 }
+
+localStorage.setItem("cart",JSON.stringify(cart));
+
+updateCartCount();
+
+showToast("Ürün sepete eklendi.");
+
+}
+
+window.addToCart=addToCart;
