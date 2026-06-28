@@ -1,16 +1,18 @@
-```javascript
 // ===============================
 // CART.JS
 // ===============================
-
-localStorage.getItem("cart")
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 const cartItems = document.getElementById("cartItems");
 const cartTotal = document.getElementById("cartTotal");
 
-drawCart();
+// DOM hazırlandıktan sonra çalıştır
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', drawCart);
+} else {
+    drawCart();
+}
 
 // -----------------------
 // Sepeti Göster
