@@ -93,7 +93,7 @@ function setupWhatsAppButton() {
             
             message += `%0AToplam : ${toplam} ₺`;
             
-            window.open("https://wa.me/905553947288?text="+message);
+            window.open("https://wa.me/905553947289?text="+message);
         }
     }
 }
