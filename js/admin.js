@@ -1,17 +1,43 @@
 // ===========================
-// ADMIN.JS
+// ADMIN.JS - Geliştirilmiş
 // ===========================
 
 const ADMIN_PASSWORD = "123456";
 
-// Para Formatı (fallback)
+// Para Formatı
 function formatPrice(price) {
     return Number(price).toLocaleString("tr-TR") + " ₺";
 }
 
 window.formatPrice = formatPrice;
 
-function login() {
+// Ayarlar için varsayılan değerler
+const defaultSettings = {
+    siteName: "Uğur Böceği",
+    location: "Bolu",
+    phone: "0534 088 82 49",
+    whatsapp: "905340888249",
+    heroTitle: "Pratik Ev Aletlerinde Yeni Nesil Alışveriş",
+    heroSubtitle: "Kaliteli ürünler • Uygun fiyat • Güvenli alışveriş",
+    campaignText: "Seçili ürünlerde %30'a varan indirim.",
+    copyright: "© 2026 Uğur Böceği Pratik Ev Aletleri",
+    campaignTitle: "Haftanın Kampanyası",
+    campaignDescription: "Seçili ürünlerde %30'a varan indirim.",
+    discountPercent: 30,
+    campaignActive: 1
+};
+
+// Ayarları yükle (yoksa varsayılan kullan)
+function loadSettings() {
+    const saved = localStorage.getItem("siteSettings");
+    return saved ? JSON.parse(saved) : defaultSettings;
+}
+
+// ===========================
+// GİRİŞ / ÇIKIŞ
+// ===========================
+
+function adminLogin() {
     const password = document.getElementById("password").value;
 
     if (password === "") {
@@ -24,45 +50,162 @@ function login() {
         return;
     }
 
-    document.getElementById("panel").style.display = "block";
-    document.getElementById("password").value = "";
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("adminPanel").style.display = "block";
+    loadSettingsForm();
     loadProducts();
 }
 
-window.login = login;
+function adminLogout() {
+    if (confirm("Çıkış yapmak istediğinize emin misiniz?")) {
+        document.getElementById("loginForm").style.display = "block";
+        document.getElementById("adminPanel").style.display = "none";
+        document.getElementById("password").value = "";
+    }
+}
+
+window.adminLogin = adminLogin;
+window.adminLogout = adminLogout;
+
+// ===========================
+// TAB KONTROL
+// ===========================
+
+function switchTab(tabName) {
+    // Tüm sekmeler gizle
+    const contents = document.querySelectorAll(".tab-content");
+    contents.forEach(el => el.classList.remove("active"));
+
+    // Tüm butonları pasif yap
+    const buttons = document.querySelectorAll(".tab-btn");
+    buttons.forEach(el => el.classList.remove("active"));
+
+    // Seçili sekmeyi göster
+    document.getElementById(tabName).classList.add("active");
+    
+    // Seçili butonu aktif yap
+    event.target.closest(".tab-btn").classList.add("active");
+}
+
+window.switchTab = switchTab;
+
+// ===========================
+// AYARLAR
+// ===========================
+
+function loadSettingsForm() {
+    const settings = loadSettings();
+    
+    document.getElementById("siteName").value = settings.siteName;
+    document.getElementById("location").value = settings.location;
+    document.getElementById("phone").value = settings.phone;
+    document.getElementById("whatsapp").value = settings.whatsapp;
+    document.getElementById("heroTitle").value = settings.heroTitle;
+    document.getElementById("heroSubtitle").value = settings.heroSubtitle;
+    document.getElementById("campaignText").value = settings.campaignText;
+    document.getElementById("copyright").value = settings.copyright;
+    document.getElementById("campaignTitle").value = settings.campaignTitle;
+    document.getElementById("campaignDescription").value = settings.campaignDescription;
+    document.getElementById("discountPercent").value = settings.discountPercent;
+    document.getElementById("campaignActive").value = settings.campaignActive;
+}
+
+function saveSettings() {
+    const settings = {
+        siteName: document.getElementById("siteName").value,
+        location: document.getElementById("location").value,
+        phone: document.getElementById("phone").value,
+        whatsapp: document.getElementById("whatsapp").value,
+        heroTitle: document.getElementById("heroTitle").value,
+        heroSubtitle: document.getElementById("heroSubtitle").value,
+        campaignText: document.getElementById("campaignText").value,
+        copyright: document.getElementById("copyright").value,
+        campaignTitle: document.getElementById("campaignTitle").value,
+        campaignDescription: document.getElementById("campaignDescription").value,
+        discountPercent: parseInt(document.getElementById("discountPercent").value),
+        campaignActive: parseInt(document.getElementById("campaignActive").value)
+    };
+
+    if (!settings.siteName || !settings.phone || !settings.location) {
+        alert("Tüm zorunlu alanları doldurun!");
+        return;
+    }
+
+    localStorage.setItem("siteSettings", JSON.stringify(settings));
+    
+    // Başarı mesajı göster
+    const msg = document.getElementById("settingsMessage");
+    msg.innerText = "✓ Ayarlar başarıyla kaydedildi!";
+    msg.classList.add("show");
+    setTimeout(() => msg.classList.remove("show"), 3000);
+}
+
+window.saveSettings = saveSettings;
+
+// ===========================
+// KAMPANYA
+// ===========================
+
+function saveCampaign() {
+    const settings = loadSettings();
+    
+    settings.campaignTitle = document.getElementById("campaignTitle").value;
+    settings.campaignDescription = document.getElementById("campaignDescription").value;
+    settings.discountPercent = parseInt(document.getElementById("discountPercent").value);
+    settings.campaignActive = parseInt(document.getElementById("campaignActive").value);
+
+    if (!settings.campaignTitle || !settings.campaignDescription) {
+        alert("Kampanya başlığı ve açıklaması gereklidir!");
+        return;
+    }
+
+    localStorage.setItem("siteSettings", JSON.stringify(settings));
+    
+    // Başarı mesajı göster
+    const msg = document.getElementById("campaignMessage");
+    msg.innerText = "✓ Kampanya ayarları başarıyla kaydedildi!";
+    msg.classList.add("show");
+    setTimeout(() => msg.classList.remove("show"), 3000);
+}
+
+window.saveCampaign = saveCampaign;
+
+// ===========================
+// ÜRÜNLER
+// ===========================
 
 function loadProducts() {
     const products = JSON.parse(localStorage.getItem("products")) || [];
-    const list = document.getElementById("adminProducts");
+    const list = document.getElementById("productsList");
     list.innerHTML = "";
 
     if (products.length === 0) {
-        list.innerHTML = "<p>Henüz ürün eklenmemiş.</p>";
+        list.innerHTML = "<p style='grid-column: 1 / -1; text-align: center; color: #999;'>Henüz ürün eklenmemiş.</p>";
         return;
     }
 
     products.forEach(product => {
         list.innerHTML += `
         <div class="product-card">
-            <img src="${product.image}" onerror="this.src='https://via.placeholder.com/230'">
-            <h3>${product.name}</h3>
-            <p>${product.category}</p>
-            <div class="price">
-                ${formatPrice(product.price)}
+            <img src="${product.image}" onerror="this.src='https://via.placeholder.com/230?text=Görsel+Bulunamadı'">
+            <div class="product-info">
+                <h4>${product.name}</h4>
+                <p>${product.category}</p>
+                <div class="price">${formatPrice(product.price)}</div>
+                <button onclick="deleteProduct(${product.id})">Sil</button>
             </div>
-            <button onclick="deleteProduct(${product.id})">
-                Sil
-            </button>
         </div>
         `;
     });
 }
 
+window.loadProducts = loadProducts;
+
 function addProduct() {
-    const name = document.getElementById("name").value.trim();
-    const price = Number(document.getElementById("price").value);
-    const category = document.getElementById("category").value.trim();
-    const image = document.getElementById("image").value.trim();
+    const name = document.getElementById("productName").value.trim();
+    const price = Number(document.getElementById("productPrice").value);
+    const category = document.getElementById("productCategory").value.trim();
+    const image = document.getElementById("productImage").value.trim();
 
     if (!name || !price || !category || !image) {
         alert("Tüm alanları doldurun.");
@@ -86,13 +229,18 @@ function addProduct() {
 
     localStorage.setItem("products", JSON.stringify(products));
 
-    document.getElementById("name").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("category").value = "";
-    document.getElementById("image").value = "";
+    document.getElementById("productName").value = "";
+    document.getElementById("productPrice").value = "";
+    document.getElementById("productCategory").value = "";
+    document.getElementById("productImage").value = "";
 
     loadProducts();
-    alert("Ürün başarıyla eklendi.");
+    
+    // Başarı mesajı göster
+    const msg = document.getElementById("productsMessage");
+    msg.innerText = "✓ Ürün başarıyla eklendi!";
+    msg.classList.add("show");
+    setTimeout(() => msg.classList.remove("show"), 3000);
 }
 
 window.addProduct = addProduct;
@@ -107,7 +255,6 @@ function deleteProduct(id) {
     localStorage.setItem("products", JSON.stringify(products));
 
     loadProducts();
-    alert("Ürün silindi.");
 }
 
 window.deleteProduct = deleteProduct;
