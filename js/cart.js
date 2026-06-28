@@ -1,408 +1,126 @@
-/* ==========================================
-   UĞUR BÖCEĞİ PRATİK EV ALETLERİ
-   CART.JS
-========================================== */
-
-const table = document.getElementById("cartTable");
-const subTotal = document.getElementById("subTotal");
-const grandTotal = document.getElementById("grandTotal");
+```javascript
+// ===============================
+// CART.JS
+// ===============================
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-/* ==========================
-   KAYDET
-========================== */
+const cartItems = document.getElementById("cartItems");
+const cartTotal = document.getElementById("cartTotal");
 
-function saveCart() {
-    localStorage.setItem("cart", JSON.stringify(cart));
-}
+drawCart();
 
-/* ==========================
-   PARA FORMATI
-========================== */
+// -----------------------
+// Sepeti Göster
+// -----------------------
 
-function formatPrice(price) {
-    return Number(price).toLocaleString("tr-TR") + " ₺";
-}
+function drawCart(){
 
-/* ==========================
-   SEPETİ GÖSTER
-========================== */
+if(!cartItems) return;
 
-function renderCart() {
+cartItems.innerHTML="";
 
-    table.innerHTML = "";
+let total=0;
 
-    if (cart.length === 0) {
+if(cart.length===0){
 
-        table.innerHTML = `
-        <tr>
-            <td colspan="5" style="text-align:center;padding:40px;">
-                🛒 Sepetiniz boş.
-            </td>
-        </tr>
-        `;
+cartItems.innerHTML="<h3>Sepetiniz boş.</h3>";
 
-        subTotal.textContent = "0 ₺";
-        grandTotal.textContent = "0 ₺";
+cartTotal.innerText="0 ₺";
 
-        return;
-    }
-
-    let total = 0;
-
-    cart.forEach((product, index) => {
-
-        const row = document.createElement("tr");
-
-        const rowTotal = product.price * product.quantity;
-
-        total += rowTotal;
-
-        row.innerHTML = `
-
-        <td>
-
-            <strong>${product.name}</strong>
-
-        </td>
-
-        <td>
-
-            ${formatPrice(product.price)}
-
-        </td>
-
-        <td>
-
-            <button onclick="decrease(${index})">
-
-            -
-
-            </button>
-
-            <span style="margin:0 10px">
-
-            ${product.quantity}
-
-            </span>
-
-            <button onclick="increase(${index})">
-
-            +
-
-            </button>
-
-        </td>
-
-        <td>
-
-            ${formatPrice(rowTotal)}
-
-        </td>
-
-        <td>
-
-            <button onclick="removeItem(${index})">
-
-            ❌
-
-            </button>
-
-        </td>
-
-        `;
-
-        table.appendChild(row);
-
-    });
-
-    subTotal.textContent = formatPrice(total);
-
-    grandTotal.textContent = formatPrice(total);
+return;
 
 }
 
-renderCart();
-/* ==========================
-   ÜRÜN ADET ARTIR
-========================== */
+cart.forEach(item=>{
 
-function increase(index){
+total += item.price * item.quantity;
 
-    cart[index].quantity++;
+cartItems.innerHTML += `
 
-    saveCart();
+<div class="product-card">
 
-    renderCart();
+<img src="${item.image}">
 
-}
+<h3>${item.name}</h3>
 
-/* ==========================
-   ÜRÜN ADET AZALT
-========================== */
+<p>Adet : ${item.quantity}</p>
 
-function decrease(index){
+<div class="price">
 
-    if(cart[index].quantity>1){
+${formatPrice(item.price)}
 
-        cart[index].quantity--;
+</div>
 
-    }else{
+<button onclick="removeItem(${item.id})">
 
-        if(confirm("Bu ürünü sepetten kaldırmak istiyor musunuz?")){
+Sepetten Sil
 
-            cart.splice(index,1);
+</button>
 
-        }
+</div>
 
-    }
-
-    saveCart();
-
-    renderCart();
-
-}
-
-/* ==========================
-   ÜRÜN SİL
-========================== */
-
-function removeItem(index){
-
-    if(confirm("Ürün sepetten silinsin mi?")){
-
-        cart.splice(index,1);
-
-        saveCart();
-
-        renderCart();
-
-    }
-
-}
-
-/* ==========================
-   SEPETİ TEMİZLE
-========================== */
-
-function clearCart(){
-
-    if(confirm("Sepetin tamamını silmek istiyor musunuz?")){
-
-        cart=[];
-
-        saveCart();
-
-        renderCart();
-
-    }
-
-}
-
-/* ==========================
-   TOPLAM TUTAR
-========================== */
-
-function getTotal(){
-
-    let total=0;
-
-    cart.forEach(item=>{
-
-        total += item.price * item.quantity;
-
-    });
-
-    return total;
-
-}
-
-/* ==========================
-   ÜRÜN EKLE
-========================== */
-
-function addProduct(product){
-
-    const existing=cart.find(item=>item.id===product.id);
-
-    if(existing){
-
-        existing.quantity++;
-
-    }else{
-
-        cart.push({
-
-            id:product.id,
-
-            name:product.name,
-
-            price:product.price,
-
-            quantity:1
-
-        });
-
-    }
-
-    saveCart();
-
-    renderCart();
-
-}
-
-/* ==========================
-   SEPET SAYISI
-========================== */
-
-function cartCount(){
-
-    return cart.reduce((sum,item)=>sum+item.quantity,0);
-
-}
-
-console.log("Sepet güncellendi.");
-/* ==========================================
-   WHATSAPP SİPARİŞ SİSTEMİ
-========================================== */
-
-const sendButton = document.getElementById("sendWhatsapp");
-
-if (sendButton) {
-
-    sendButton.addEventListener("click", sendOrder);
-
-}
-
-function sendOrder() {
-
-    if (cart.length === 0) {
-
-        alert("Sepetiniz boş.");
-
-        return;
-
-    }
-
-    const name = document.getElementById("customerName").value.trim();
-    const phone = document.getElementById("customerPhone").value.trim();
-    const address = document.getElementById("customerAddress").value.trim();
-    const note = document.getElementById("customerNote").value.trim();
-
-    if (name === "" || phone === "" || address === "") {
-
-        alert("Lütfen Ad Soyad, Telefon ve Adres bilgilerini doldurun.");
-
-        return;
-
-    }
-
-    let message = "🛒 *UĞUR BÖCEĞİ PRATİK EV ALETLERİ*%0A%0A";
-
-    message += "📋 *Yeni Sipariş*%0A%0A";
-
-    message += "👤 Ad Soyad: " + name + "%0A";
-    message += "📞 Telefon: " + phone + "%0A";
-    message += "📍 Adres: " + address + "%0A";
-
-    if (note !== "") {
-
-        message += "📝 Not: " + note + "%0A";
-
-    }
-
-    message += "%0A";
-
-    message += "🛍️ *Sipariş Detayları*%0A";
-
-    let total = 0;
-
-    cart.forEach((item, index) => {
-
-        const rowTotal = item.price * item.quantity;
-
-        total += rowTotal;
-
-        message +=
-            (index + 1) +
-            ". " +
-            item.name +
-            "%0A";
-
-        message +=
-            "Adet: " +
-            item.quantity +
-            "%0A";
-
-        message +=
-            "Fiyat: " +
-            formatPrice(item.price) +
-            "%0A";
-
-        message +=
-            "Toplam: " +
-            formatPrice(rowTotal) +
-            "%0A%0A";
-
-    });
-
-    message += "💰 *Genel Toplam:* " + formatPrice(total);
-
-    const whatsapp =
-        "https://wa.me/905553947288?text=" + message;
-
-    window.open(whatsapp, "_blank");
-
-}
-
-/* ==========================================
-   SAYFA BAŞLANGICI
-========================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    renderCart();
+`;
 
 });
 
-console.log("Cart.js başarıyla yüklendi.");
-/* ==========================================
-   ANASAYFADAN SEPETE EKLE
-========================================== */
+cartTotal.innerText=formatPrice(total);
 
-window.addToCart = function (id, name, price, image) {
+}
 
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+// -----------------------
+// Ürün Sil
+// -----------------------
 
-    const existingProduct = cart.find(item => item.id === id);
+function removeItem(id){
 
-    if (existingProduct) {
+cart=cart.filter(x=>x.id!=id);
 
-        existingProduct.quantity++;
+localStorage.setItem("cart",JSON.stringify(cart));
 
-    } else {
+updateCartCount();
 
-        cart.push({
-            id: id,
-            name: name,
-            price: Number(price),
-            image: image,
-            quantity: 1
-        });
+drawCart();
 
-    }
+}
 
-    localStorage.setItem("cart", JSON.stringify(cart));
+window.removeItem=removeItem;
 
-    alert("✅ Ürün sepete eklendi.");
+// -----------------------
+// WhatsApp Siparişi
+// -----------------------
 
-    // Sayfadaki sepet sayısını güncelle (varsa)
-    const cartCount = document.getElementById("cartCount");
+const whatsappBtn=document.getElementById("whatsappBtn");
 
-    if (cartCount) {
-        const total = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartCount.textContent = total;
-    }
+if(whatsappBtn){
 
-};
+whatsappBtn.onclick=function(){
+
+if(cart.length===0){
+
+alert("Sepet boş.");
+
+return;
+
+}
+
+let message="Merhaba, sipariş vermek istiyorum.%0A%0A";
+
+let toplam=0;
+
+cart.forEach(item=>{
+
+message+=`${item.name} x${item.quantity} - ${item.price} ₺%0A`;
+
+toplam += item.price * item.quantity;
+
+});
+
+message+=`%0AToplam : ${toplam} ₺`;
+
+window.open("https://wa.me/905553947288?text="+message);
+
+}
+
+}
+```
