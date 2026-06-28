@@ -1,29 +1,26 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uğur Böceği Pratik Ev Aletleri</title>
 
-<title>Uğur Böceği Pratik Ev Aletleri</title>
+    <link rel="stylesheet" href="css/style.css">
 
-<link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
 <body>
 
 <header>
 
+<div class="container">
+
 <div class="logo">
-
 🐞 Uğur Böceği
-
 </div>
 
 <nav>
@@ -40,7 +37,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 
 </nav>
 
-<div class="icons">
+<div class="header-icons">
 
 <a href="cart.html">
 
@@ -52,31 +49,31 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 
 </div>
 
+</div>
+
 </header>
 
 <section class="hero">
 
-<div class="hero-text">
+<div class="hero-content">
 
 <h1>
 
-Ev İşlerini Kolaylaştıran
+Pratik Ev Aletlerinde
 
-<br>
-
-Pratik Ev Aletleri
+Yeni Nesil Alışveriş
 
 </h1>
 
 <p>
 
-Kaliteli ürünleri uygun fiyatlarla keşfet.
+Kaliteli ürünler • Uygun fiyat • Güvenli alışveriş
 
 </p>
 
 <a href="products.html" class="btn">
 
-Alışverişe Başla
+Ürünleri İncele
 
 </a>
 
@@ -88,7 +85,7 @@ Alışverişe Başla
 
 <h2>Kategoriler</h2>
 
-<div class="categoryGrid">
+<div class="category-grid">
 
 <div>Airfryer</div>
 
@@ -96,13 +93,13 @@ Alışverişe Başla
 
 <div>Kahve Makinesi</div>
 
-<div>Süpürge</div>
-
 <div>Tost Makinesi</div>
 
-<div>Ütü</div>
-
 <div>Robot Süpürge</div>
+
+<div>Elektrikli Süpürge</div>
+
+<div>Ütü</div>
 
 <div>Çay Makinesi</div>
 
@@ -110,37 +107,39 @@ Alışverişe Başla
 
 </section>
 
-<section>
+<section class="products">
 
-<h2 class="title">
+<h2>
 
-Ürünler
+Popüler Ürünler
 
 </h2>
 
 <div id="productGrid">
 
+<!-- products.js buraya ürünleri ekleyecek -->
+
 </div>
 
 </section>
 
-<section id="kampanya">
+<section id="kampanya" class="campaign">
 
 <h2>
 
-Günün Kampanyası
+Haftanın Kampanyası
 
 </h2>
 
 <p>
 
-Her hafta yeni indirimler.
+Seçili ürünlerde %30'a varan indirim.
 
 </p>
 
 </section>
 
-<section id="iletisim">
+<section id="iletisim" class="contact">
 
 <h2>
 
@@ -161,14 +160,11 @@ Her hafta yeni indirimler.
 </p>
 
 <a
-
-class="whatsapp"
-
+href="https://wa.me/905553947288"
 target="_blank"
+class="whatsapp">
 
-href="https://wa.me/905553947288">
-
-WhatsApp
+WhatsApp'tan Sipariş Ver
 
 </a>
 
@@ -176,19 +172,23 @@ WhatsApp
 
 <footer>
 
-© 2026
+<div class="footer">
 
-Uğur Böceği Pratik Ev Aletleri
+<p>
+
+© 2026 Uğur Böceği Pratik Ev Aletleri
+
+</p>
+
+</div>
 
 </footer>
 
-<script type="module" src="js/firebase.js"></script>
+<script src="js/app.js"></script>
 
-<script type="module" src="js/products.js"></script>
+<script src="js/products.js"></script>
 
 <script src="js/cart.js"></script>
-
-<script src="js/app.js"></script>
 
 </body>
 
