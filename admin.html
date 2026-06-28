@@ -1,210 +1,123 @@
+```html
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Admin Paneli | Uğur Böceği</title>
+<title>Admin Paneli</title>
 
 <link rel="stylesheet" href="css/style.css">
 
-<link rel="stylesheet" href="css/admin.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
 
-<div class="admin-login" id="loginPage">
+<header>
 
-<div class="login-box">
+<div class="container">
 
-<h1>🐞</h1>
+<div class="logo">
 
-<h2>Uğur Böceği Yönetim Paneli</h2>
+🐞 Uğur Böceği Admin
+
+</div>
+
+<nav>
+
+<a href="index.html">Siteye Dön</a>
+
+<a href="cart.html">Sepet</a>
+
+</nav>
+
+</div>
+
+</header>
+
+<section class="products">
+
+<h2>Admin Paneli</h2>
+
+<div style="max-width:600px;margin:auto;">
 
 <input
 type="password"
-id="adminPassword"
-placeholder="Yönetici Şifresi">
+id="password"
+placeholder="Admin Şifresi"
+style="width:100%;padding:12px;margin-bottom:15px;">
 
-<button id="loginButton">
+<button
+class="btn"
+onclick="login()"
+style="width:100%;margin-bottom:20px;">
 
 Giriş Yap
 
 </button>
 
-<p id="loginError"></p>
-
-</div>
-
-</div>
-
-<div class="dashboard" id="dashboard" style="display:none;">
-
-<aside>
-
-<h2>🐞 Yönetim</h2>
-
-<ul>
-
-<li class="active">
-<i class="fa-solid fa-house"></i>
-Gösterge Paneli
-</li>
-
-<li>
-<i class="fa-solid fa-box"></i>
-Ürünler
-</li>
-
-<li>
-<i class="fa-solid fa-tags"></i>
-Kategoriler
-</li>
-
-<li>
-<i class="fa-solid fa-cart-shopping"></i>
-Siparişler
-</li>
-
-<li>
-<i class="fa-solid fa-gear"></i>
-Ayarlar
-</li>
-
-<li id="logout">
-<i class="fa-solid fa-right-from-bracket"></i>
-Çıkış
-</li>
-
-</ul>
-
-</aside>
-
-<main>
-
-<h1>Ürün Yönetimi</h1>
-
-<div class="cards">
-
-<div class="card">
-
-<h3>Toplam Ürün</h3>
-
-<h2 id="productCount">
-
-0
-
-</h2>
-
-</div>
-
-<div class="card">
-
-<h3>Siparişler</h3>
-
-<h2>
-
-0
-
-</h2>
-
-</div>
-
-<div class="card">
-
-<h3>Kategoriler</h3>
-
-<h2>
-
-0
-
-</h2>
-
-</div>
-
-</div>
-
-<h2>Yeni Ürün Ekle</h2>
-
-<form id="productForm">
+<div id="panel" style="display:none;">
 
 <input
 type="text"
-id="productName"
+id="name"
 placeholder="Ürün Adı"
-required>
+style="width:100%;padding:12px;margin-bottom:10px;">
 
 <input
 type="number"
-id="productPrice"
+id="price"
 placeholder="Fiyat"
-required>
+style="width:100%;padding:12px;margin-bottom:10px;">
 
 <input
 type="text"
-id="productCategory"
+id="category"
 placeholder="Kategori"
-required>
+style="width:100%;padding:12px;margin-bottom:10px;">
 
 <input
-type="url"
-id="productImage"
-placeholder="Resim URL">
+type="text"
+id="image"
+placeholder="Resim URL"
+style="width:100%;padding:12px;margin-bottom:10px;">
 
-<textarea
-id="productDescription"
-placeholder="Ürün Açıklaması"></textarea>
+<button
+class="btn"
+onclick="addProduct()"
+style="width:100%;">
 
-<button type="submit">
-
-Ürünü Kaydet
+Ürün Ekle
 
 </button>
 
-</form>
+<h3 style="margin-top:30px;">
 
-<h2>Ürün Listesi</h2>
+Mevcut Ürünler
 
-<table>
+</h3>
 
-<thead>
-
-<tr>
-
-<th>Resim</th>
-
-<th>Ürün</th>
-
-<th>Kategori</th>
-
-<th>Fiyat</th>
-
-<th>İşlem</th>
-
-</tr>
-
-</thead>
-
-<tbody id="productTable">
-
-</tbody>
-
-</table>
-
-</main>
+<div id="adminProducts"></div>
 
 </div>
-<script type="module" src="js/firebase.js"></script>
-  
-<script type="module" src="js/admin.js"></script>
+
+</div>
+
+</section>
+
+<footer>
+
+© 2026 Uğur Böceği
+
+</footer>
+
+<script src="js/app.js"></script>
+<script src="js/admin.js"></script>
 
 </body>
-
 </html>
+```
