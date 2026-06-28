@@ -1,438 +1,105 @@
-/* ==========================================
-   UĞUR BÖCEĞİ PRATİK EV ALETLERİ
-   ADMIN.JS
-========================================== */
+```javascript
+// ===========================
+// ADMIN.JS
+// ===========================
 
-/* Yönetici Şifresi
-   Daha sonra Firebase Authentication kullanılacak.
-*/
-const ADMIN_PASSWORD = "Ugurbocegi2026";
-
-/* HTML Elemanları */
-const loginPage = document.getElementById("loginPage");
-const dashboard = document.getElementById("dashboard");
-const loginButton = document.getElementById("loginButton");
-const passwordInput = document.getElementById("adminPassword");
-const loginError = document.getElementById("loginError");
-const logoutButton = document.getElementById("logout");
-
-const productForm = document.getElementById("productForm");
-const productTable = document.getElementById("productTable");
-const productCount = document.getElementById("productCount");
-
-/* Ürünleri LocalStorage'dan Oku */
-let products = JSON.parse(localStorage.getItem("products")) || [];
-
-/* ==========================================
-   GİRİŞ
-========================================== */
-
-loginButton.addEventListener("click", login);
-
-passwordInput.addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-        login();
-    }
-});
+const ADMIN_PASSWORD = "123456";
 
 function login() {
 
-    if (passwordInput.value === ADMIN_PASSWORD) {
+    const password = document.getElementById("password").value;
 
-        loginPage.style.display = "none";
-        dashboard.style.display = "flex";
-
-        renderProducts();
-
-    } else {
-
-        loginError.innerHTML = "❌ Şifre yanlış.";
-        passwordInput.value = "";
-        passwordInput.focus();
-
+    if (password !== ADMIN_PASSWORD) {
+        alert("Şifre yanlış!");
+        return;
     }
 
+    document.getElementById("panel").style.display = "block";
+    loadProducts();
 }
 
-/* ==========================================
-   ÇIKIŞ
-========================================== */
+window.login = login;
 
-logoutButton.addEventListener("click", () => {
+function loadProducts() {
 
-    if (confirm("Yönetim panelinden çıkılsın mı?")) {
+    const products = JSON.parse(localStorage.getItem("products")) || [];
 
-        dashboard.style.display = "none";
-        loginPage.style.display = "flex";
+    const list = document.getElementById("adminProducts");
 
-        passwordInput.value = "";
+    list.innerHTML = "";
 
-    }
+    products.forEach(product => {
 
-});
+        list.innerHTML += `
+        <div class="product-card">
 
-/* ==========================================
-   KAYDET
-========================================== */
+            <img src="${product.image}">
 
-function saveProducts() {
+            <h3>${product.name}</h3>
 
-    localStorage.setItem(
-        "products",
-        JSON.stringify(products)
-    );
+            <p>${product.category}</p>
 
-}
-/* ==========================================
-   ÜRÜN EKLE
-========================================== */
+            <div class="price">
+                ${formatPrice(product.price)}
+            </div>
 
-productForm.addEventListener("submit", function (e) {
+            <button onclick="deleteProduct(${product.id})">
+                Sil
+            </button>
 
-    e.preventDefault();
-
-    const name = document.getElementById("productName").value.trim();
-    const price = Number(document.getElementById("productPrice").value);
-    const category = document.getElementById("productCategory").value.trim();
-    const image = document.getElementById("productImage").value.trim();
-    const description = document.getElementById("productDescription").value.trim();
-
-    const product = {
-
-        id: Date.now(),
-
-        name,
-
-        price,
-
-        category,
-
-        image,
-
-        description,
-
-        stock: true
-
-    };
-
-    products.push(product);
-
-    saveProducts();
-
-    renderProducts();
-
-    productForm.reset();
-
-    alert("✅ Ürün başarıyla eklendi.");
-
-});
-
-/* ==========================================
-   ÜRÜNLERİ TABLOYA YAZDIR
-========================================== */
-
-function renderProducts() {
-
-    productTable.innerHTML = "";
-
-    products.forEach((product) => {
-
-        productTable.innerHTML += `
-
-<tr>
-
-<td>
-
-<img
-src="${product.image || 'images/no-image.png'}"
-width="60"
-height="60"
-style="object-fit:cover;border-radius:8px;">
-
-</td>
-
-<td>
-
-${product.name}
-
-</td>
-
-<td>
-
-${product.category}
-
-</td>
-
-<td>
-
-${product.price.toLocaleString("tr-TR")} ₺
-
-</td>
-
-<td>
-
-<button
-onclick="editProduct(${product.id})">
-
-✏️
-
-</button>
-
-<button
-onclick="deleteProduct(${product.id})">
-
-🗑️
-
-</button>
-
-</td>
-
-</tr>
-
-`;
+        </div>
+        `;
 
     });
 
-    productCount.textContent = products.length;
-
 }
 
-/* ==========================================
-   ÜRÜN SİL
-========================================== */
+function addProduct() {
+
+    const name = document.getElementById("name").value.trim();
+    const price = Number(document.getElementById("price").value);
+    const category = document.getElementById("category").value.trim();
+    const image = document.getElementById("image").value.trim();
+
+    if (!name || !price || !category || !image) {
+        alert("Tüm alanları doldurun.");
+        return;
+    }
+
+    const products = JSON.parse(localStorage.getItem("products")) || [];
+
+    products.push({
+        id: Date.now(),
+        name,
+        price,
+        category,
+        image
+    });
+
+    localStorage.setItem("products", JSON.stringify(products));
+
+    document.getElementById("name").value = "";
+    document.getElementById("price").value = "";
+    document.getElementById("category").value = "";
+    document.getElementById("image").value = "";
+
+    loadProducts();
+
+    alert("Ürün eklendi.");
+}
+
+window.addProduct = addProduct;
 
 function deleteProduct(id) {
 
-    const answer = confirm("Bu ürün silinsin mi?");
-
-    if (!answer) return;
+    let products = JSON.parse(localStorage.getItem("products")) || [];
 
     products = products.filter(product => product.id !== id);
 
-    saveProducts();
+    localStorage.setItem("products", JSON.stringify(products));
 
-    renderProducts();
-
+    loadProducts();
 }
 
-/* ==========================================
-   ÜRÜN DÜZENLE (İLK SÜRÜM)
-========================================== */
-
-function editProduct(id) {
-
-    const product = products.find(item => item.id === id);
-
-    if (!product) return;
-
-    document.getElementById("productName").value = product.name;
-    document.getElementById("productPrice").value = product.price;
-    document.getElementById("productCategory").value = product.category;
-    document.getElementById("productImage").value = product.image;
-    document.getElementById("productDescription").value = product.description;
-
-    products = products.filter(item => item.id !== id);
-
-    saveProducts();
-
-    renderProducts();
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
-}
-
-/* ==========================================
-   ÜRÜN ARAMA
-========================================== */
-
-const searchInput = document.getElementById("productSearch");
-
-if (searchInput) {
-
-    searchInput.addEventListener("keyup", searchProducts);
-
-}
-
-function searchProducts() {
-
-    const text = searchInput.value.toLowerCase();
-
-    const rows = productTable.querySelectorAll("tr");
-
-    rows.forEach(row => {
-
-        if (row.innerText.toLowerCase().includes(text)) {
-
-            row.style.display = "";
-
-        } else {
-
-            row.style.display = "none";
-
-        }
-
-    });
-
-}
-
-/* ==========================================
-   KATEGORİ FİLTRESİ
-========================================== */
-
-function filterCategory(category) {
-
-    const rows = productTable.querySelectorAll("tr");
-
-    rows.forEach(row => {
-
-        if (
-            category === "Tümü" ||
-            row.innerText.includes(category)
-        ) {
-
-            row.style.display = "";
-
-        } else {
-
-            row.style.display = "none";
-
-        }
-
-    });
-
-}
-
-/* ==========================================
-   STOK DURUMU
-========================================== */
-
-function toggleStock(id) {
-
-    const product = products.find(p => p.id === id);
-
-    if (!product) return;
-
-    product.stock = !product.stock;
-
-    saveProducts();
-
-    renderProducts();
-
-}
-
-/* ==========================================
-   ÖNE ÇIKAN ÜRÜN
-========================================== */
-
-function toggleFeatured(id) {
-
-    const product = products.find(p => p.id === id);
-
-    if (!product) return;
-
-    product.featured = !product.featured;
-
-    saveProducts();
-
-    renderProducts();
-
-}
-
-/* ==========================================
-   YEDEKLE
-========================================== */
-
-function exportProducts() {
-
-    const data = JSON.stringify(products, null, 2);
-
-    const blob = new Blob([data], {
-
-        type: "application/json"
-
-    });
-
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-
-    link.href = url;
-
-    link.download = "urunler.json";
-
-    link.click();
-
-    URL.revokeObjectURL(url);
-
-}
-
-/* ==========================================
-   YEDEK YÜKLE
-========================================== */
-
-function importProducts(event) {
-
-    const file = event.target.files[0];
-
-    if (!file) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-
-        try {
-
-            products = JSON.parse(e.target.result);
-
-            saveProducts();
-
-            renderProducts();
-
-            alert("Yedek başarıyla yüklendi.");
-
-        } catch {
-
-            alert("Geçersiz JSON dosyası.");
-
-        }
-
-    };
-
-    reader.readAsText(file);
-
-}
-
-/* ==========================================
-   PANEL İSTATİSTİKLERİ
-========================================== */
-
-function updateDashboard() {
-
-    productCount.textContent = products.length;
-
-    const stockCount = products.filter(p => p.stock).length;
-
-    console.log("Stoktaki ürün:", stockCount);
-
-}
-
-/* renderProducts fonksiyonunu güncelle */
-const oldRenderProducts = renderProducts;
-
-renderProducts = function () {
-
-    oldRenderProducts();
-
-    updateDashboard();
-
-};
-
-renderProducts();
-
-console.log("Admin Panel Bölüm 3 yüklendi.");
+window.deleteProduct = deleteProduct;
+```
