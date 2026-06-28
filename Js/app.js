@@ -1,75 +1,31 @@
-// =======================================
+// =========================================
 // UĞUR BÖCEĞİ PRATİK EV ALETLERİ
 // APP.JS
-// =======================================
+// =========================================
 
-// Sayfa açıldığında çalışır
+// Sayfa yüklendiğinde çalışır
 document.addEventListener("DOMContentLoaded", () => {
     updateCartCount();
-    smoothScroll();
 });
 
-// -----------------------------
-// Sepet Sayısını Güncelle
-// -----------------------------
-function updateCartCount() {
-
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    const count = cart.reduce((total, item) => {
-        return total + item.quantity;
-    }, 0);
-
-    const badge = document.getElementById("cartCount");
-
-    if (badge) {
-        badge.textContent = count;
-    }
-
-}
-
-// -----------------------------
-// Sayfalar arası yumuşak geçiş
-// -----------------------------
-function smoothScroll() {
-
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-
-        link.addEventListener("click", function (e) {
-
-            const target = document.querySelector(this.getAttribute("href"));
-
-            if (target) {
-
-                e.preventDefault();
-
-                target.scrollIntoView({
-                    behavior: "smooth"
-                });
-
-            }
-
-        });
-
-    });
-
-}
-
-// -----------------------------
-// Para formatı
-// -----------------------------
-window.formatPrice = function (price) {
-
+// ------------------------------
+// Para Formatı
+// ------------------------------
+function formatPrice(price) {
     return Number(price).toLocaleString("tr-TR") + " ₺";
-
 }
 
-// -----------------------------
-// Bildirim
-// -----------------------------
-window.showMessage = function (message) {
+// Diğer dosyalarda kullanılabilmesi için
+window.formatPrice = formatPrice;
+
+// ------------------------------
+// Bildirim Kutusu
+// ------------------------------
+function showToast(message) {
 
     const toast = document.createElement("div");
+
+    toast.className = "toast";
 
     toast.innerText = message;
 
@@ -79,16 +35,62 @@ window.showMessage = function (message) {
     toast.style.background = "#d40000";
     toast.style.color = "#fff";
     toast.style.padding = "15px 25px";
-    toast.style.borderRadius = "8px";
+    toast.style.borderRadius = "10px";
+    toast.style.boxShadow = "0 5px 15px rgba(0,0,0,.25)";
     toast.style.zIndex = "99999";
-    toast.style.boxShadow = "0 8px 20px rgba(0,0,0,.25)";
 
     document.body.appendChild(toast);
 
     setTimeout(() => {
-
         toast.remove();
-
     }, 2500);
 
 }
+
+window.showToast = showToast;
+
+// ------------------------------
+// Sepet Sayısını Güncelle
+// ------------------------------
+function updateCartCount() {
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    let total = 0;
+
+    cart.forEach(item => {
+        total += item.quantity;
+    });
+
+    const badge = document.getElementById("cartCount");
+
+    if (badge) {
+        badge.innerText = total;
+    }
+
+}
+
+window.updateCartCount = updateCartCount;
+
+// ------------------------------
+// LocalStorage Yardımcıları
+// ------------------------------
+function getProducts() {
+    return JSON.parse(localStorage.getItem("products")) || [];
+}
+
+function saveProducts(products) {
+    localStorage.setItem("products", JSON.stringify(products));
+}
+
+window.getProducts = getProducts;
+window.saveProducts = saveProducts;
+
+// ------------------------------
+// Rastgele ID Oluştur
+// ------------------------------
+function generateId() {
+    return Date.now();
+}
+
+window.generateId = generateId;
