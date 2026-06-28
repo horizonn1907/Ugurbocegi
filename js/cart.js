@@ -3,6 +3,8 @@
 // CART.JS
 // ===============================
 
+localStorage.getItem("cart")
+
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 const cartItems = document.getElementById("cartItems");
@@ -123,4 +125,3 @@ window.open("https://wa.me/905553947288?text="+message);
 }
 
 }
-```
