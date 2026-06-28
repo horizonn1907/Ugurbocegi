@@ -23,35 +23,7 @@
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
 </head>
-<script>
-// Sepete Ekle butonlarını bağla
-document.querySelectorAll('.add-cart').forEach(btn => {
-    btn.onclick = function() {
-        const id = parseInt(this.dataset.id);
-        const name = this.dataset.name;
-        const price = parseInt(this.dataset.price);
-        
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const index = cart.findIndex(x => x.id == id);
-        
-        if(index === -1) {
-            cart.push({
-                id: id,
-                name: name,
-                price: price,
-                image: this.parentElement.parentElement.querySelector('img').src,
-                quantity: 1
-            });
-        } else {
-            cart[index].quantity++;
-        }
-        
-        localStorage.setItem("cart", JSON.stringify(cart));
-        updateCartCount();
-        showToast("Ürün sepete eklendi.");
-    }
-});
-</script>
+
 <body>
 
 <header>
@@ -404,3 +376,53 @@ Tost Makinesi
     </div>
 
 </div>
+
+</div>
+
+</div>
+
+</section>
+
+<footer>
+
+© 2026 Uğur Böceği Pratik Ev Aletleri
+
+</footer>
+
+<script src="js/app.js"></script>
+
+<script>
+// Sepete Ekle butonlarını bağla - DOM hazırlandıktan sonra
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.add-cart').forEach(btn => {
+        btn.onclick = function() {
+            const id = parseInt(this.dataset.id);
+            const name = this.dataset.name;
+            const price = parseInt(this.dataset.price);
+            
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const index = cart.findIndex(x => x.id == id);
+            
+            if(index === -1) {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    image: this.parentElement.parentElement.querySelector('img').src,
+                    quantity: 1
+                });
+            } else {
+                cart[index].quantity++;
+            }
+            
+            localStorage.setItem("cart", JSON.stringify(cart));
+            updateCartCount();
+            showToast("Ürün sepete eklendi.");
+        }
+    });
+});
+</script>
+
+</body>
+
+</html>
