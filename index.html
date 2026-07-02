@@ -3,195 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uğur Böceği Pratik Ev Aletleri</title>
-
-    <link rel="stylesheet" href="css/style.css">
-
+    <title>Ugurbocegi - Online Ürün Mağazası</title>
+    <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
-
 <body>
-
-<header>
-
-<div class="container">
-
-<div class="logo">
-🐞 Uğur Böceği
-</div>
-
-<nav>
-
-<a href="index.html">Anasayfa</a>
-
-<a href="products.html">Ürünler</a>
-
-<a href="#kampanya">Kampanyalar</a>
-
-<a href="#iletisim">İletişim</a>
-
-<a href="admin.html">Admin</a>
-
-</nav>
-
-<div class="header-icons">
-
-<a href="cart.html">
-
-<i class="fa-solid fa-cart-shopping"></i>
-
-<span id="cartCount">0</span>
-
-</a>
-
-</div>
-
-</div>
-
-</header>
-
-<section class="hero">
-
-<div class="hero-content">
-
-<h1>
-
-Pratik Ev Aletlerinde
-
-Yeni Nesil Alışveriş
-
-</h1>
-
-<p>
-
-Kaliteli ürünler • Uygun fiyat • Güvenli alışveriş
-
-</p>
-
-<a href="products.html" class="btn">
-
-Ürünleri İncele
-
-</a>
-
-</div>
-
-</section>
-
-<section class="categories">
-
-<h2>Kategoriler</h2>
-
-<div class="category-grid">
-
-<div>Airfryer</div>
-
-<div>Blender</div>
-
-<div>Kahve Makinesi</div>
-
-<div>Tost Makinesi</div>
-
-<div>Robot Süpürge</div>
-
-<div>Elektrikli Süpürge</div>
-
-<div>Ütü</div>
-
-<div>Çay Makinesi</div>
-
-</div>
-
-</section>
-
-<section class="products">
-
-<h2>
-
-Popüler Ürünler
-
-</h2>
-
-<div id="productGrid">
-
-<!-- products.js buraya ürünleri ekleyecek -->
-
-</div>
-
-</section>
-
-<section id="kampanya" class="campaign">
-
-<h2>
-
-Haftanın Kampanyası
-
-</h2>
-
-<p>
-
-Seçili ürünlerde %30'a varan indirim.
-
-</p>
-
-</section>
-
-<section id="iletisim" class="contact">
-
-<h2>
-
-İletişim
-
-</h2>
-
-<p>
-
-📞 0534 088 82 49
-
-</p>
-
-<p>
-
-📍 Bolu
-
-</p>
-
-<a
-href="https://wa.me/905340888249"
-target="_blank"
-class="whatsapp">
-
-WhatsApp'tan Sipariş Ver
-
-</a>
-
-</section>
-
-<footer>
-
-<div class="footer">
-
-<p>
-
-© 2026 Uğur Böceği Pratik Ev Aletleri
-
-</p>
-
-</div>
-
-</footer>
-
-<script src="js/app.js"></script>
-
-<script src="js/settings.js"></script>
-
-<script src="js/products.js"></script>
-
-<script src="js/cart.js"></script>
-
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>🛍️ Ugurbocegi</h1>
+                <p>Kaliteli Ürünler • Uygun Fiyat</p>
+            </div>
+            <div class="cart-info">
+                <span class="cart-count" id="cartCount">0</span>
+                <button class="cart-btn" onclick="toggleCart()">🛒 Sepet</button>
+                <a href="admin.html" class="admin-link">⚙️ Admin</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h2>🎉 Hoşgeldiniz</h2>
+            <p>En kaliteli ürünleri en uygun fiyatlarla bulabilirsiniz</p>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products-section">
+            <h2>📦 Ürünlerimiz</h2>
+            <div class="products-grid" id="productsGrid">
+                <!-- Ürünler buraya yüklenecek -->
+            </div>
+        </section>
+
+        <!-- Empty State -->
+        <section style="text-align: center; padding: 40px; display: none;" id="emptyState">
+            <p style="font-size: 18px; color: #999;">
+                Henüz ürün eklenmemiştir. 
+                <a href="admin.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
+                    Admin panelinden ürün ekleyebilirsiniz.
+                </a>
+            </p>
+        </section>
+    </main>
+
+    <!-- Shopping Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🛒 Alışveriş Sepeti</h2>
+                <button class="close-btn" onclick="toggleCart()">&times;</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <!-- Sepet ürünleri buraya eklenecek -->
+            </div>
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Toplam:</span>
+                    <span class="total-price" id="totalPrice">0₺</span>
+                </div>
+            </div>
+            <button onclick="orderViaWhatsApp()" class="btn btn-whatsapp">
+                📱 WhatsApp ile Sipariş Ver
+            </button>
+            <button onclick="clearCart()" class="btn btn-secondary">🗑️ Sepeti Temizle</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Ugurbocegi - Tüm Hakları Saklıdır</p>
+        <p>📞 <a href="tel:905553947289" style="color: white; text-decoration: none;">0555 394 7289</a> | 
+           📱 <a href="https://wa.me/905553947289" target="_blank" style="color: white; text-decoration: none;">WhatsApp</a>
+        </p>
+    </footer>
+
+    <script src="js/utils.js"></script>
+    <script src="js/shop.js"></script>
 </body>
-
 </html>
