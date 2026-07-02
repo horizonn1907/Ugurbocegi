@@ -1,6 +1,6 @@
 // =====================================
 // UĞUR BÖCEĞİ PRATİK EV ALETLERİ
-// PRODUCTS.JS (güncellendi: products.json'dan fetch + fallback)
+// PRODUCTS.JS (güncellendi: products.json'dan fetch + fallback + cache-bust)
 // =====================================
 
 // Varsayılan ürünler (fallback olarak kullanılır)
@@ -65,26 +65,43 @@ function renderProducts(products){
   });
 }
 
-// Önce repodaki products.json'dan çekmeyi dene
-fetch('products.json')
-  .then(res => {
-    if(!res.ok) throw new Error('products.json bulunamadı');
-    return res.json();
-  })
-  .then(remoteProducts => {
-    window.products = remoteProducts;
-    try{ localStorage.setItem('products', JSON.stringify(remoteProducts)); } catch(e){/* ignore */}
-    renderProducts(remoteProducts);
-  })
-  .catch(() => {
-    // fallback: localStorage ya da defaultProducts
-    if(localStorage.getItem('products')==null){
-      localStorage.setItem('products', JSON.stringify(defaultProducts));
+// -------------------------
+// ÜRÜNLERİ YÜKLE (localStorage öncelikli, sonra remote güncelle)
+// -------------------------
+
+(function loadInitialProducts(){
+  try{
+    const local = localStorage.getItem('products');
+    if(local){
+      const localProducts = JSON.parse(local);
+      window.products = localProducts;
+      renderProducts(localProducts);
     }
-    const products = JSON.parse(localStorage.getItem('products'))||[];
-    window.products = products;
-    renderProducts(products);
-  });
+  }catch(e){/* ignore parse errors */}
+
+  // Her zaman remote'dan en günceli almaya çalış, cache-bust ekle
+  const url = 'products.json?ts=' + Date.now();
+  fetch(url, { cache: 'no-store' })
+    .then(res => {
+      if(!res.ok) throw new Error('products.json bulunamadı');
+      return res.json();
+    })
+    .then(remoteProducts => {
+      // Eğer remote başarılı ise localStorage'ı güncelle ve UI'ı yenile (farklıysa)
+      try{ localStorage.setItem('products', JSON.stringify(remoteProducts)); } catch(e){/* ignore */}
+      window.products = remoteProducts;
+      renderProducts(remoteProducts);
+    })
+    .catch(() => {
+      // Eğer localStorage yoksa ve fetch başarısızsa fallback olarak default kullan
+      if(!localStorage.getItem('products')){
+        localStorage.setItem('products', JSON.stringify(defaultProducts));
+      }
+      const products = JSON.parse(localStorage.getItem('products'))||[];
+      window.products = products;
+      renderProducts(products);
+    });
+})();
 
 // -------------------------
 // Sepete Ekle
