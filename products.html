@@ -22,6 +22,80 @@
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
+<style>
+  .page-tabs {
+    display: flex;
+    gap: 10px;
+    margin: 30px 0;
+    border-bottom: 2px solid #eee;
+  }
+
+  .page-tabs button {
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+    font-size: 16px;
+  }
+
+  .page-tabs button.active {
+    color: #d40000;
+    border-bottom-color: #d40000;
+  }
+
+  .page-tabs button:hover {
+    color: #d40000;
+  }
+
+  .tab-section {
+    display: none;
+    animation: fadeIn 0.3s;
+  }
+
+  .tab-section.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .campaign-container {
+    background: linear-gradient(135deg, #d40000 0%, #ff6b6b 100%);
+    color: white;
+    padding: 40px;
+    border-radius: 10px;
+    margin: 30px 0;
+    text-align: center;
+  }
+
+  .campaign-container h2 {
+    font-size: 32px;
+    margin: 0 0 15px 0;
+  }
+
+  .campaign-container p {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  .discount-badge {
+    display: inline-block;
+    background: #fff;
+    color: #d40000;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 700;
+    margin-top: 15px;
+    font-size: 20px;
+  }
+</style>
+
 </head>
 
 <body>
@@ -46,7 +120,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
 
 <li><a href="products.html" class="active">Ürünler</a></li>
 
-<li><a href="#">Kampanyalar</a></li>
+<li><a href="#" onclick="scrollToTab('campaigns'); return false;">Kampanyalar</a></li>
 
 <li><a href="#">Hakkımızda</a></li>
 
@@ -83,6 +157,21 @@ Küçük ev aletlerinde en kaliteli ürünler.
 </div>
 
 </section>
+
+<!-- TAB MENÜSÜ -->
+<div class="container">
+  <div class="page-tabs">
+    <button class="tab-btn active" onclick="switchProductTab('products-tab')">
+      <i class="fa-solid fa-box"></i> Ürünler
+    </button>
+    <button class="tab-btn" onclick="switchProductTab('campaigns-tab')">
+      <i class="fa-solid fa-star"></i> Kampanyalar
+    </button>
+  </div>
+</div>
+
+<!-- ÜRÜNLER SEKMESİ -->
+<div id="products-tab" class="tab-section active">
 
 <section class="filters">
 
@@ -159,229 +248,38 @@ Tost Makinesi
 
 <div class="container">
 
-<div class="product-grid">
-  <!-- ÜRÜN 1 -->
-
-<div class="product-card">
-
-    <span class="discount">%20</span>
-
-    <button class="favorite">
-        <i class="fa-regular fa-heart"></i>
-    </button>
-
-    <img src="images/airfryer1.png" alt="Airfryer">
-
-    <h3>Philips Airfryer XXL</h3>
-
-    <p class="stock in-stock">
-        ✔ Stokta Var
-    </p>
-
-    <div class="price">
-        <del>8.999 ₺</del>
-        <strong>7.199 ₺</strong>
-    </div>
-
-    <div class="stars">
-        ★★★★★
-    </div>
-
-    <div class="buttons">
-
-        <a href="product.html?id=1" class="detail-btn">
-            İncele
-        </a>
-
-        <button class="btn add-cart"
-                data-id="1"
-                data-name="Philips Airfryer XXL"
-                data-price="7199">
-            Sepete Ekle
-        </button>
-
-    </div>
-
-</div>
-
-<!-- ÜRÜN 2 -->
-
-<div class="product-card">
-
-    <span class="discount">%15</span>
-
-    <button class="favorite">
-        <i class="fa-regular fa-heart"></i>
-    </button>
-
-    <img src="images/blender1.png" alt="Blender">
-
-    <h3>Arzum Blender Seti</h3>
-
-    <p class="stock in-stock">
-        ✔ Stokta Var
-    </p>
-
-    <div class="price">
-        <del>2.999 ₺</del>
-        <strong>2.549 ₺</strong>
-    </div>
-
-    <div class="stars">
-        ★★★★★
-    </div>
-
-    <div class="buttons">
-
-        <a href="product.html?id=2"
-           class="detail-btn">
-
-           İncele
-
-        </a>
-
-        <button class="btn add-cart"
-                data-id="2"
-                data-name="Arzum Blender Seti"
-                data-price="2549">
-
-            Sepete Ekle
-
-        </button>
-
-    </div>
-
-</div>
-
-<!-- ÜRÜN 3 -->
-
-<div class="product-card">
-
-    <span class="discount">%25</span>
-
-    <button class="favorite">
-
-        <i class="fa-regular fa-heart"></i>
-
-    </button>
-
-    <img src="images/vacuum1.png">
-
-    <h3>Dikey Şarjlı Süpürge</h3>
-
-    <p class="stock in-stock">
-
-        ✔ Stokta Var
-
-    </p>
-
-    <div class="price">
-
-        <del>10.999 ₺</del>
-
-        <strong>8.299 ₺</strong>
-
-    </div>
-
-    <div class="stars">
-
-        ★★★★★
-
-    </div>
-
-    <div class="buttons">
-
-        <a href="product.html?id=3"
-
-           class="detail-btn">
-
-           İncele
-
-        </a>
-
-        <button class="btn add-cart"
-
-                data-id="3"
-
-                data-name="Şarjlı Süpürge"
-
-                data-price="8299">
-
-                Sepete Ekle
-
-        </button>
-
-    </div>
-
-</div>
-
-<!-- ÜRÜN 4 -->
-
-<div class="product-card">
-
-    <span class="discount">%10</span>
-
-    <button class="favorite">
-
-        <i class="fa-regular fa-heart"></i>
-
-    </button>
-
-    <img src="images/toast1.png">
-
-    <h3>Karaca Tost Makinesi</h3>
-
-    <p class="stock in-stock">
-
-        ✔ Stokta Var
-
-    </p>
-
-    <div class="price">
-
-        <del>3.499 ₺</del>
-
-        <strong>3.149 ₺</strong>
-
-    </div>
-
-    <div class="stars">
-
-        ★★★★★
-
-    </div>
-
-    <div class="buttons">
-
-        <a href="product.html?id=4"
-
-           class="detail-btn">
-
-           İncele
-
-        </a>
-
-        <button class="btn add-cart"
-
-                data-id="4"
-
-                data-name="Karaca Tost Makinesi"
-
-                data-price="3149">
-
-                Sepete Ekle
-
-        </button>
-
-    </div>
-
-</div>
-
+<div class="product-grid" id="productGrid">
+  <!-- Ürünler burada yüklenecek -->
 </div>
 
 </div>
 
 </section>
+
+</div>
+
+<!-- KAMPANYALAR SEKMESİ -->
+<div id="campaigns-tab" class="tab-section">
+
+<section class="products">
+
+<div class="container">
+
+<div id="campaignContent" class="campaign-container">
+  <!-- Kampanya bilgileri burada yüklenecek -->
+</div>
+
+<h3 style="margin-top: 40px; margin-bottom: 20px;">Kampanya Ürünleri</h3>
+
+<div class="product-grid" id="campaignProductGrid">
+  <!-- Kampanya ürünleri burada yüklenecek -->
+</div>
+
+</div>
+
+</section>
+
+</div>
 
 <footer>
 
@@ -394,34 +292,241 @@ Tost Makinesi
 <script src="js/settings.js"></script>
 
 <script>
-// Sepete Ekle butonlarını bağla - DOM hazırlandıktan sonra
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.add-cart').forEach(btn => {
-        btn.onclick = function() {
-            const id = parseInt(this.dataset.id);
-            const name = this.dataset.name;
-            const price = parseInt(this.dataset.price);
-            
-            let cart = JSON.parse(localStorage.getItem("cart")) || [];
-            const index = cart.findIndex(x => x.id == id);
-            
-            if(index === -1) {
-                cart.push({
-                    id: id,
-                    name: name,
-                    price: price,
-                    image: this.parentElement.parentElement.querySelector('img').src,
-                    quantity: 1
-                });
-            } else {
-                cart[index].quantity++;
-            }
-            
-            localStorage.setItem("cart", JSON.stringify(cart));
-            updateCartCount();
-            showToast("Ürün sepete eklendi.");
-        }
+// Tab Fonksiyonları
+function switchProductTab(tabName) {
+  // Tüm sekmeler gizle
+  const sections = document.querySelectorAll(".tab-section");
+  sections.forEach(el => el.classList.remove("active"));
+
+  // Tüm butonları pasif yap
+  const buttons = document.querySelectorAll(".tab-btn");
+  buttons.forEach(el => el.classList.remove("active"));
+
+  // Seçili sekmeyi göster
+  document.getElementById(tabName).classList.add("active");
+  
+  // Seçili butonu aktif yap
+  event.target.closest(".tab-btn").classList.add("active");
+}
+
+window.switchProductTab = switchProductTab;
+
+function scrollToTab(tabName) {
+  const button = document.querySelector(`[onclick="switchProductTab('${tabName}')"]`);
+  if (button) {
+    button.click();
+    button.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+window.scrollToTab = scrollToTab;
+
+// Ayarları yükle
+function loadSiteSettings() {
+  const defaultSettings = {
+    siteName: "Uğur Böceği",
+    location: "Bolu",
+    phone: "0534 088 82 49",
+    whatsapp: "905340888249",
+    heroTitle: "Pratik Ev Aletlerinde Yeni Nesil Alışveriş",
+    heroSubtitle: "Kaliteli ürünler • Uygun fiyat • Güvenli alışveriş",
+    campaignText: "Seçili ürünlerde %30'a varan indirim.",
+    copyright: "© 2026 Uğur Böceği Pratik Ev Aletleri",
+    campaignTitle: "Haftanın Kampanyası",
+    campaignDescription: "Seçili ürünlerde %30'a varan indirim.",
+    discountPercent: 30,
+    campaignActive: 1
+  };
+
+  const saved = localStorage.getItem("siteSettings");
+  return saved ? JSON.parse(saved) : defaultSettings;
+}
+
+// Para Formatı
+function formatPrice(price) {
+  return Number(price).toLocaleString("tr-TR") + " ₺";
+}
+
+// Ürünleri yükle
+function loadProductsPage() {
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const grid = document.getElementById("productGrid");
+  
+  grid.innerHTML = "";
+
+  if (products.length === 0) {
+    // Varsayılan ürünleri göster
+    const defaultProducts = [
+      { id: 1, name: "Philips Airfryer XXL", price: 7199, category: "Airfryer", image: "images/airfryer1.png", discount: 20 },
+      { id: 2, name: "Arzum Blender Seti", price: 2549, category: "Blender", image: "images/blender1.png", discount: 15 },
+      { id: 3, name: "Dikey Şarjlı Süpürge", price: 8299, category: "Süpürge", image: "images/vacuum1.png", discount: 25 },
+      { id: 4, name: "Karaca Tost Makinesi", price: 3149, category: "Tost Makinesi", image: "images/toast1.png", discount: 10 }
+    ];
+    
+    defaultProducts.forEach(product => {
+      const card = createProductCard(product);
+      grid.innerHTML += card;
     });
+  } else {
+    products.forEach(product => {
+      const card = createProductCard(product);
+      grid.innerHTML += card;
+    });
+  }
+
+  // Sepete ekle butonlarını bağla
+  attachAddToCartListeners();
+}
+
+function createProductCard(product) {
+  const discount = product.discount || 15;
+  const originalPrice = Math.round(product.price * 100 / (100 - discount));
+  
+  return `
+    <div class="product-card">
+      <span class="discount">%${discount}</span>
+      <button class="favorite">
+        <i class="fa-regular fa-heart"></i>
+      </button>
+      <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/250?text=Görsel+Bulunamadı'">
+      <h3>${product.name}</h3>
+      <p class="stock in-stock">
+        ✔ Stokta Var
+      </p>
+      <div class="price">
+        <del>${formatPrice(originalPrice)}</del>
+        <strong>${formatPrice(product.price)}</strong>
+      </div>
+      <div class="stars">
+        ★★★★★
+      </div>
+      <div class="buttons">
+        <button class="detail-btn">İncele</button>
+        <button class="btn add-cart"
+          data-id="${product.id}"
+          data-name="${product.name}"
+          data-price="${product.price}">
+          Sepete Ekle
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function attachAddToCartListeners() {
+  document.querySelectorAll('.add-cart').forEach(btn => {
+    btn.onclick = function() {
+      const id = parseInt(this.dataset.id);
+      const name = this.dataset.name;
+      const price = parseInt(this.dataset.price);
+      
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const index = cart.findIndex(x => x.id == id);
+      
+      if(index === -1) {
+        cart.push({
+          id: id,
+          name: name,
+          price: price,
+          image: this.parentElement.parentElement.querySelector('img').src,
+          quantity: 1
+        });
+      } else {
+        cart[index].quantity++;
+      }
+      
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount();
+      showToast("Ürün sepete eklendi.");
+    }
+  });
+}
+
+// Kampanya sayfasını yükle
+function loadCampaignPage() {
+  const settings = loadSiteSettings();
+  const campaignContent = document.getElementById("campaignContent");
+  
+  if (settings.campaignActive == 1) {
+    campaignContent.innerHTML = `
+      <h2>${settings.campaignTitle}</h2>
+      <p>${settings.campaignDescription}</p>
+      <div class="discount-badge">%${settings.discountPercent} İNDİRİM</div>
+    `;
+  } else {
+    campaignContent.innerHTML = `
+      <h2>Kampanya Şu Anda Aktif Değil</h2>
+      <p>Yeni kampanyalar için lütfen bizi takip edin.</p>
+    `;
+  }
+
+  // Kampanya ürünlerini göster
+  const products = JSON.parse(localStorage.getItem("products")) || [];
+  const campaignGrid = document.getElementById("campaignProductGrid");
+  
+  if (products.length === 0) {
+    campaignGrid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; color: #999; padding: 40px;">
+        <p>Kampanya ürünü bulunamadı.</p>
+      </div>
+    `;
+  } else {
+    campaignGrid.innerHTML = "";
+    products.forEach(product => {
+      const card = createProductCard(product);
+      campaignGrid.innerHTML += card;
+    });
+    attachAddToCartListeners();
+  }
+}
+
+// Cart count güncelle
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const countElements = document.querySelectorAll("#cartCount, [data-cart-count]");
+  countElements.forEach(el => {
+    el.textContent = cartCount;
+  });
+}
+
+// Toast mesajı
+function showToast(message) {
+  const toast = document.createElement('div');
+  toast.textContent = message;
+  toast.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #4caf50;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+    animation: slideIn 0.3s;
+  `;
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.animation = 'slideOut 0.3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// Sayfa yüklendiğinde
+document.addEventListener('DOMContentLoaded', function() {
+  loadProductsPage();
+  loadCampaignPage();
+  updateCartCount();
+  
+  // Arama ve filtreleme
+  const searchInput = document.getElementById('search');
+  if (searchInput) {
+    searchInput.addEventListener('keyup', function() {
+      // Arama fonksiyonu - ileride eklenebilir
+      console.log('Search:', this.value);
+    });
+  }
 });
 </script>
 
