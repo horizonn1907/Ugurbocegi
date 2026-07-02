@@ -1,5 +1,5 @@
 // ===========================
-// ADMIN.JS - Geliştirilmiş
+// ADMIN.JS - Geliştirilmiş (güncellendi)
 // ===========================
 
 const ADMIN_PASSWORD = "123456";
@@ -31,6 +31,25 @@ const defaultSettings = {
 function loadSettings() {
     const saved = localStorage.getItem("siteSettings");
     return saved ? JSON.parse(saved) : defaultSettings;
+}
+
+// ---------------------------
+// JSON İNDİRME YARDIMCISI
+// ---------------------------
+function downloadJSON(filename, data){
+    try{
+        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+    }catch(e){
+        console.error('JSON indirilemedi', e);
+    }
 }
 
 // ===========================
@@ -84,7 +103,9 @@ function switchTab(tabName) {
     document.getElementById(tabName).classList.add("active");
     
     // Seçili butonu aktif yap
-    event.target.closest(".tab-btn").classList.add("active");
+    try{
+      event.target.closest(".tab-btn").classList.add("active");
+    }catch(e){/* ignore */}
 }
 
 window.switchTab = switchTab;
@@ -94,8 +115,23 @@ window.switchTab = switchTab;
 // ===========================
 
 function loadSettingsForm() {
-    const settings = loadSettings();
-    
+    // Önce repodan settings.json çekmeyi dene — varsa localStorage'a kaydet
+    fetch('settings.json')
+      .then(res => {
+        if(!res.ok) throw new Error('settings.json bulunamadı');
+        return res.json();
+      })
+      .then(remoteSettings => {
+        try{ localStorage.setItem('siteSettings', JSON.stringify(remoteSettings)); }catch(e){}
+        applySettingsToForm(remoteSettings);
+      })
+      .catch(() => {
+        const settings = loadSettings();
+        applySettingsToForm(settings);
+      });
+}
+
+function applySettingsToForm(settings){
     document.getElementById("siteName").value = settings.siteName;
     document.getElementById("location").value = settings.location;
     document.getElementById("phone").value = settings.phone;
@@ -138,6 +174,9 @@ function saveSettings() {
     msg.innerText = "✓ Ayarlar başarıyla kaydedildi!";
     msg.classList.add("show");
     setTimeout(() => msg.classList.remove("show"), 3000);
+
+    // Kullanıcının repoya gönderebilmesi için settings.json indir
+    downloadJSON('settings.json', settings);
 }
 
 window.saveSettings = saveSettings;
@@ -166,6 +205,9 @@ function saveCampaign() {
     msg.innerText = "✓ Kampanya ayarları başarıyla kaydedildi!";
     msg.classList.add("show");
     setTimeout(() => msg.classList.remove("show"), 3000);
+
+    // İnidirilebilir settings.json güncelle
+    downloadJSON('settings.json', settings);
 }
 
 window.saveCampaign = saveCampaign;
@@ -241,6 +283,10 @@ function addProduct() {
     msg.innerText = "✓ Ürün başarıyla eklendi!";
     msg.classList.add("show");
     setTimeout(() => msg.classList.remove("show"), 3000);
+
+    // Yeni products.json indir
+    const updatedProducts = JSON.parse(localStorage.getItem('products') || '[]');
+    downloadJSON('products.json', updatedProducts);
 }
 
 window.addProduct = addProduct;
@@ -255,6 +301,9 @@ function deleteProduct(id) {
     localStorage.setItem("products", JSON.stringify(products));
 
     loadProducts();
+
+    // Güncel products.json indir
+    downloadJSON('products.json', products);
 }
 
 window.deleteProduct = deleteProduct;

@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Airfryer XL",
+    "price": 5999,
+    "image": "https://images.unsplash.com/photo-1586201375761-83865001e31b?w=600",
+    "category": "Airfryer"
+  },
+  {
+    "id": 2,
+    "name": "Blender Seti",
+    "price": 2499,
+    "image": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=600",
+    "category": "Blender"
+  },
+  {
+    "id": 3,
+    "name": "Robot Süpürge",
+    "price": 8999,
+    "image": "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600",
+    "category": "Robot Süpürge"
+  }
+]
