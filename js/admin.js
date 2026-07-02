@@ -1,252 +1,253 @@
-// ===========================
-// ADMIN.JS - Geliştirilmiş (güncellendi)
-// ===========================
-
-const ADMIN_PASSWORD = "123456";
-
-// Para Formatı
-function formatPrice(price) {
-    return Number(price).toLocaleString("tr-TR") + " ₺";
-}
-
-window.formatPrice = formatPrice;
-
-// Ayarlar için varsayılan değerler
-const defaultSettings = {
-    siteName: "Uğur Böceği",
-    location: "Bolu",
-    phone: "0534 088 82 49",
-    whatsapp: "905340888249",
-    heroTitle: "Pratik Ev Aletlerinde Yeni Nesil Alışveriş",
-    heroSubtitle: "Kaliteli ürünler • Uygun fiyat • Güvenli alışveriş",
-    campaignText: "Seçili ürünlerde %30'a varan indirim.",
-    copyright: "© 2026 Uğur Böceği Pratik Ev Aletleri",
-    campaignTitle: "Haftanın Kampanyası",
-    campaignDescription: "Seçili ürünlerde %30'a varan indirim.",
-    discountPercent: 30,
-    campaignActive: 1
-};
-
-// Ayarları yükle (yoksa varsayılan kullan)
-function loadSettings() {
-    const saved = localStorage.getItem("siteSettings");
-    if (saved) {
-        try { applySettingsToForm(JSON.parse(saved)); } catch(e) { /* ignore parse errors */ }
-    }
-
-    // Önce repodan settings.json çekmeyi dene — varsa localStorage'a kaydet (cache-bust)
-    const url = 'settings.json?ts=' + Date.now();
-    fetch(url, { cache: 'no-store' })
-      .then(res => {
-        if(!res.ok) throw new Error('settings.json bulunamadı');
-        return res.json();
-      })
-      .then(remoteSettings => {
-        try{ localStorage.setItem('siteSettings', JSON.stringify(remoteSettings)); }catch(e){}
-        applySettingsToForm(remoteSettings);
-      })
-      .catch(() => {
-        // hata durumunda zaten localStorage'dan alınmış olan değeri gösteriyoruz
-      });
-}
-
-function applySettingsToForm(settings){
-    document.getElementById("siteName").value = settings.siteName;
-    document.getElementById("location").value = settings.location;
-    document.getElementById("phone").value = settings.phone;
-    document.getElementById("whatsapp").value = settings.whatsapp;
-    document.getElementById("heroTitle").value = settings.heroTitle;
-    document.getElementById("heroSubtitle").value = settings.heroSubtitle;
-    document.getElementById("campaignText").value = settings.campaignText;
-    document.getElementById("copyright").value = settings.copyright;
-    document.getElementById("campaignTitle").value = settings.campaignTitle;
-    document.getElementById("campaignDescription").value = settings.campaignDescription;
-    document.getElementById("discountPercent").value = settings.discountPercent;
-    document.getElementById("campaignActive").value = settings.campaignActive;
-}
-
-function saveSettings() {
-    const settings = {
-        siteName: document.getElementById("siteName").value,
-        location: document.getElementById("location").value,
-        phone: document.getElementById("phone").value,
-        whatsapp: document.getElementById("whatsapp").value,
-        heroTitle: document.getElementById("heroTitle").value,
-        heroSubtitle: document.getElementById("heroSubtitle").value,
-        campaignText: document.getElementById("campaignText").value,
-        copyright: document.getElementById("copyright").value,
-        campaignTitle: document.getElementById("campaignTitle").value,
-        campaignDescription: document.getElementById("campaignDescription").value,
-        discountPercent: parseInt(document.getElementById("discountPercent").value),
-        campaignActive: parseInt(document.getElementById("campaignActive").value)
-    };
-
-    if (!settings.siteName || !settings.phone || !settings.location) {
-        alert("Tüm zorunlu alanları doldurun!");
-        return;
-    }
-
-    localStorage.setItem("siteSettings", JSON.stringify(settings));
+// Add Product Function
+function handleAddProduct(event) {
+    event.preventDefault();
     
-    // Başarı mesajı göster
-    const msg = document.getElementById("settingsMessage");
-    msg.innerText = "✓ Ayarlar başarıyla kaydedildi!";
-    msg.classList.add("show");
-    setTimeout(() => msg.classList.remove("show"), 3000);
-
-    // Kullanıcının repoya gönderebilmesi için settings.json indir
-    downloadJSON('settings.json', settings);
-}
-
-window.saveSettings = saveSettings;
-
-// ===========================
-// KAMPANYA
-// ===========================
-
-function saveCampaign() {
-    const settings = JSON.parse(localStorage.getItem("siteSettings")) || defaultSettings;
+    const name = document.getElementById('productName').value.trim();
+    const price = parseFloat(document.getElementById('productPrice').value);
+    const image = document.getElementById('productImage').value.trim();
+    const description = document.getElementById('productDescription').value.trim();
+    const category = document.getElementById('productCategory').value;
+    const stock = parseInt(document.getElementById('productStock').value) || 0;
+    const discount = parseInt(document.getElementById('productDiscount').value) || 0;
     
-    settings.campaignTitle = document.getElementById("campaignTitle").value;
-    settings.campaignDescription = document.getElementById("campaignDescription").value;
-    settings.discountPercent = parseInt(document.getElementById("discountPercent").value);
-    settings.campaignActive = parseInt(document.getElementById("campaignActive").value);
-
-    if (!settings.campaignTitle || !settings.campaignDescription) {
-        alert("Kampanya başlığı ve açıklaması gereklidir!");
+    if (!name || !price || !image) {
+        showToast('Lütfen zorunlu alanları doldurunuz!', 'error');
         return;
     }
-
-    localStorage.setItem("siteSettings", JSON.stringify(settings));
     
-    // Başarı mesajı göster
-    const msg = document.getElementById("campaignMessage");
-    msg.innerText = "✓ Kampanya ayarları başarıyla kaydedildi!";
-    msg.classList.add("show");
-    setTimeout(() => msg.classList.remove("show"), 3000);
-
-    // İnidirilebilir settings.json güncelle
-    downloadJSON('settings.json', settings);
-}
-
-window.saveCampaign = saveCampaign;
-
-// ===========================
-// ÜRÜNLER
-// ===========================
-
-function renderProductsList(products) {
-    const list = document.getElementById("productsList");
-    list.innerHTML = "";
-
-    if (products.length === 0) {
-        list.innerHTML = "<p style='grid-column: 1 / -1; text-align: center; color: #999;'>Henüz ürün eklenmemiş.</p>";
-        return;
-    }
-
-    products.forEach(product => {
-        list.innerHTML += `
-        <div class="product-card">
-            <img src="${product.image}" onerror="this.src='https://via.placeholder.com/230?text=Görsel+Bulunamadı'">
-            <div class="product-info">
-                <h4>${product.name}</h4>
-                <p>${product.category}</p>
-                <div class="price">${formatPrice(product.price)}</div>
-                <button onclick="deleteProduct(${product.id})">Sil</button>
-            </div>
-        </div>
-        `;
-    });
-}
-
-function loadProducts(skipRemoteFetch){
-    const products = JSON.parse(localStorage.getItem("products")) || [];
-    renderProductsList(products);
-
-    if(skipRemoteFetch) return;
-
-    // Remote'dan güncel products.json'ı almaya çalış (cache-bust)
-    const purl = 'products.json?ts=' + Date.now();
-    fetch(purl, { cache: 'no-store' })
-      .then(res => {
-        if(!res.ok) throw new Error('products.json bulunamadı');
-        return res.json();
-      })
-      .then(remoteProducts => {
-        try{ localStorage.setItem('products', JSON.stringify(remoteProducts)); }catch(e){}
-        // Eğer remote farklıysa yeniden render et (ikinci çağrıda skipRemoteFetch=true)
-        if (JSON.stringify(remoteProducts) !== JSON.stringify(products)){
-            loadProducts(true);
-        }
-      })
-      .catch(() => {
-        // ignore fetch errors
-      });
-}
-
-window.loadProducts = loadProducts;
-
-function addProduct() {
-    const name = document.getElementById("productName").value.trim();
-    const price = Number(document.getElementById("productPrice").value);
-    const category = document.getElementById("productCategory").value.trim();
-    const image = document.getElementById("productImage").value.trim();
-
-    if (!name || !price || !category || !image) {
-        alert("Tüm alanları doldurun.");
-        return;
-    }
-
-    if (price <= 0) {
-        alert("Fiyat 0'dan büyük olmalıdır.");
-        return;
-    }
-
-    const products = JSON.parse(localStorage.getItem("products")) || [];
-
-    products.push({
+    const product = {
         id: Date.now(),
         name,
         price,
+        image,
+        description,
         category,
-        image
-    });
-
-    localStorage.setItem("products", JSON.stringify(products));
-
-    document.getElementById("productName").value = "";
-    document.getElementById("productPrice").value = "";
-    document.getElementById("productCategory").value = "";
-    document.getElementById("productImage").value = "";
-
-    loadProducts();
+        stock,
+        discount,
+        createdAt: new Date().toLocaleString('tr-TR')
+    };
     
-    // Başarı mesajı göster
-    const msg = document.getElementById("productsMessage");
-    msg.innerText = "✓ Ürün başarıyla eklendi!";
-    msg.classList.add("show");
-    setTimeout(() => msg.classList.remove("show"), 3000);
-
-    // Yeni products.json indir
-    const updatedProducts = JSON.parse(localStorage.getItem('products') || '[]');
-    downloadJSON('products.json', updatedProducts);
+    const products = getProducts();
+    products.push(product);
+    saveProducts(products);
+    
+    // Reset form
+    document.querySelector('.product-form').reset();
+    document.getElementById('previewName').textContent = 'Ürün Adı';
+    document.getElementById('previewPrice').textContent = '0₺';
+    document.querySelector('.preview-image').innerHTML = '<p>Resim gösterilecek</p>';
+    
+    showToast('✅ Ürün başarıyla eklendi!');
+    
+    // Refresh product list if on that section
+    if (document.getElementById('products-list').classList.contains('active')) {
+        displayProducts();
+    }
 }
 
-window.addProduct = addProduct;
-
-function deleteProduct(id) {
-    if (!confirm("Bu ürünü silmek istediğinize emin misiniz?")) {
+// Display all products
+function displayProducts() {
+    const products = getProducts();
+    const tbody = document.getElementById('productsTableBody');
+    
+    if (!tbody) return;
+    
+    tbody.innerHTML = '';
+    
+    if (products.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Henüz ürün eklenmemiştir.</td></tr>';
         return;
     }
-
-    let products = JSON.parse(localStorage.getItem("products")) || [];
-    products = products.filter(product => product.id !== id);
-    localStorage.setItem("products", JSON.stringify(products));
-
-    loadProducts();
-
-    // Güncel products.json indir
-    downloadJSON('products.json', products);
+    
+    products.forEach(product => {
+        const discountedPrice = product.discount ? (product.price * (100 - product.discount) / 100).toFixed(2) : product.price.toFixed(2);
+        const row = `
+            <tr>
+                <td><img src="${product.image}" alt="${product.name}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 3px;"></td>
+                <td>${product.name}</td>
+                <td>${product.category}</td>
+                <td>${product.price.toFixed(2)}₺</td>
+                <td>${product.stock}</td>
+                <td>${product.discount}%</td>
+                <td>
+                    <button onclick="editProduct(${product.id})" class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px;">✏️ Düzenle</button>
+                    <button onclick="deleteProduct(${product.id})" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">🗑️ Sil</button>
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
 }
 
-window.deleteProduct = deleteProduct;
+// Filter products
+function filterProducts() {
+    const searchTerm = document.getElementById('searchProducts').value.toLowerCase();
+    const products = getProducts();
+    const tbody = document.getElementById('productsTableBody');
+    
+    if (!tbody) return;
+    
+    const filtered = products.filter(p => p.name.toLowerCase().includes(searchTerm));
+    tbody.innerHTML = '';
+    
+    if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 20px;">Sonuç bulunamadı.</td></tr>';
+        return;
+    }
+    
+    filtered.forEach(product => {
+        const row = `
+            <tr>
+                <td><img src="${product.image}" alt="${product.name}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 3px;"></td>
+                <td>${product.name}</td>
+                <td>${product.category}</td>
+                <td>${product.price.toFixed(2)}₺</td>
+                <td>${product.stock}</td>
+                <td>${product.discount}%</td>
+                <td>
+                    <button onclick="editProduct(${product.id})" class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px;">✏️ Düzenle</button>
+                    <button onclick="deleteProduct(${product.id})" class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;">🗑️ Sil</button>
+                </td>
+            </tr>
+        `;
+        tbody.innerHTML += row;
+    });
+}
+
+// Edit product
+function editProduct(productId) {
+    const products = getProducts();
+    const product = products.find(p => p.id === productId);
+    
+    if (!product) return;
+    
+    document.getElementById('editProductId').value = productId;
+    document.getElementById('editProductName').value = product.name;
+    document.getElementById('editProductPrice').value = product.price;
+    document.getElementById('editProductImage').value = product.image;
+    document.getElementById('editProductDescription').value = product.description;
+    document.getElementById('editProductStock').value = product.stock;
+    document.getElementById('editProductDiscount').value = product.discount;
+    
+    document.getElementById('editModal').classList.add('show');
+}
+
+// Handle edit product
+function handleEditProduct(event) {
+    event.preventDefault();
+    
+    const productId = parseInt(document.getElementById('editProductId').value);
+    const products = getProducts();
+    const productIndex = products.findIndex(p => p.id === productId);
+    
+    if (productIndex === -1) return;
+    
+    products[productIndex] = {
+        ...products[productIndex],
+        name: document.getElementById('editProductName').value,
+        price: parseFloat(document.getElementById('editProductPrice').value),
+        image: document.getElementById('editProductImage').value,
+        description: document.getElementById('editProductDescription').value,
+        stock: parseInt(document.getElementById('editProductStock').value),
+        discount: parseInt(document.getElementById('editProductDiscount').value)
+    };
+    
+    saveProducts(products);
+    closeEditModal();
+    displayProducts();
+    showToast('✅ Ürün başarıyla güncellendi!');
+}
+
+// Delete product
+function deleteProduct(productId) {
+    if (confirm('Bu ürünü silmek istediğinize emin misiniz?')) {
+        const products = getProducts();
+        const filtered = products.filter(p => p.id !== productId);
+        saveProducts(filtered);
+        displayProducts();
+        showToast('✅ Ürün silindi');
+    }
+}
+
+// Close edit modal
+function closeEditModal() {
+    document.getElementById('editModal').classList.remove('show');
+}
+
+// Show/hide sections
+function showSection(sectionId) {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => section.classList.remove('active'));
+    
+    const navBtns = document.querySelectorAll('.nav-btn');
+    navBtns.forEach(btn => btn.classList.remove('active'));
+    
+    document.getElementById(sectionId).classList.add('active');
+    event.target.classList.add('active');
+    
+    if (sectionId === 'products-list') {
+        displayProducts();
+    }
+}
+
+// Save settings
+function saveSettings() {
+    const whatsappNumber = document.getElementById('whatsappNumber').value;
+    const storeInfo = document.getElementById('storeInfo').value;
+    
+    if (!whatsappNumber) {
+        showToast('WhatsApp numarası gereklidir!', 'error');
+        return;
+    }
+    
+    const settings = {
+        whatsappNumber,
+        storeInfo
+    };
+    
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    showToast('✅ Ayarlar kaydedildi!');
+}
+
+// Export data
+function exportData() {
+    const data = {
+        products: getProducts(),
+        settings: getSettings(),
+        exportDate: new Date().toLocaleString('tr-TR')
+    };
+    
+    const dataStr = JSON.stringify(data, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `ugurbocegi_${new Date().toISOString()}.json`;
+    link.click();
+    
+    showToast('✅ Veriler indirildi!');
+}
+
+// Clear all data
+function clearAllData() {
+    if (confirm('TÜM VERİLER SİLİNECEK! Devam etmek istediğinize emin misiniz?')) {
+        localStorage.clear();
+        initializeStorage();
+        showToast('✅ Tüm veriler silindi!');
+        location.reload();
+    }
+}
+
+// Initialize admin page
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('productsTableBody')) {
+        initializeStorage();
+        
+        const settings = getSettings();
+        const whatsappNumberInput = document.getElementById('whatsappNumber');
+        const storeInfoInput = document.getElementById('storeInfo');
+        
+        if (whatsappNumberInput) whatsappNumberInput.value = settings.whatsappNumber;
+        if (storeInfoInput) storeInfoInput.value = settings.storeInfo;
+    }
+});
