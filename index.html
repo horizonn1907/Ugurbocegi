@@ -18,7 +18,7 @@
             <div class="cart-info">
                 <span class="cart-count" id="cartCount">0</span>
                 <button class="cart-btn" onclick="toggleCart()">🛒 Sepet</button>
-                <a href="admin.html" class="admin-link">⚙️ Admin</a>
+                <a href="admin.html" class="admin-link" style="color: white; text-decoration: none; padding: 8px 16px; background: rgba(255,255,255,0.2); border-radius: 5px;">⚙️ Admin</a>
             </div>
         </div>
     </header>
@@ -26,26 +26,38 @@
     <!-- Main Container -->
     <main class="container">
         <!-- Hero Section -->
-        <section class="hero-section">
-            <h2>🎉 Hoşgeldiniz</h2>
-            <p>En kaliteli ürünleri en uygun fiyatlarla bulabilirsiniz</p>
+        <section class="hero-section" style="background: linear-gradient(135deg, rgba(212, 0, 0, 0.1) 0%, rgba(212, 0, 0, 0.05) 100%); padding: 40px; border-radius: 10px; text-align: center; margin: 30px 0;">
+            <h2 style="font-size: 32px; margin-bottom: 10px;">🎉 Hoşgeldiniz</h2>
+            <p style="font-size: 18px; color: #666;">En kaliteli ürünleri en uygun fiyatlarla bulabilirsiniz</p>
         </section>
 
         <!-- Products Section -->
         <section class="products-section">
-            <h2>📦 Ürünlerimiz</h2>
+            <h2 style="font-size: 28px; margin-bottom: 30px;">📦 Ürünlerimiz</h2>
             <div class="products-grid" id="productsGrid">
                 <!-- Ürünler buraya yüklenecek -->
             </div>
+            <div id="emptyState" style="text-align: center; padding: 60px 20px; display: none;">
+                <p style="font-size: 18px; color: #999; margin-bottom: 20px;">
+                    ℹ️ Henüz ürün eklenmemiştir
+                </p>
+                <a href="admin.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600; font-size: 16px;">
+                    Admin panelinden ürün ekleyebilirsiniz →
+                </a>
+            </div>
         </section>
 
-        <!-- Empty State -->
-        <section style="text-align: center; padding: 40px; display: none;" id="emptyState">
-            <p style="font-size: 18px; color: #999;">
-                Henüz ürün eklenmemiştir. 
-                <a href="admin.html" style="color: var(--primary-color); text-decoration: none; font-weight: 600;">
-                    Admin panelinden ürün ekleyebilirsiniz.
+        <!-- Contact Info -->
+        <section style="background: var(--secondary-color); padding: 40px; border-radius: 10px; margin: 40px 0; text-align: center;">
+            <h3>📞 İletişim</h3>
+            <p style="font-size: 18px; margin: 10px 0;">
+                <strong>WhatsApp:</strong> 
+                <a href="https://wa.me/905553947289" target="_blank" style="color: #25d366; text-decoration: none; font-weight: 600;">
+                    0555 394 7289
                 </a>
+            </p>
+            <p style="margin: 10px 0; color: #666;">
+                Siparişleriniz için WhatsApp ile bize ulaşabilirsiniz
             </p>
         </section>
     </main>
@@ -67,7 +79,7 @@
                 </div>
             </div>
             <button onclick="orderViaWhatsApp()" class="btn btn-whatsapp">
-                📱 WhatsApp ile Sipariş Ver
+                📱 WhatsApp ile Sipariş Ver (0555 394 7289)
             </button>
             <button onclick="clearCart()" class="btn btn-secondary">🗑️ Sepeti Temizle</button>
         </div>
@@ -77,11 +89,14 @@
     <div class="toast" id="toast"></div>
 
     <!-- Footer -->
-    <footer>
-        <p>&copy; 2026 Ugurbocegi - Tüm Hakları Saklıdır</p>
-        <p>📞 <a href="tel:905553947289" style="color: white; text-decoration: none;">0555 394 7289</a> | 
-           📱 <a href="https://wa.me/905553947289" target="_blank" style="color: white; text-decoration: none;">WhatsApp</a>
-        </p>
+    <footer style="background: linear-gradient(135deg, #d40000 0%, #a00000 100%); color: white; padding: 30px 0; margin-top: 40px;">
+        <div class="container" style="text-align: center;">
+            <p style="margin: 10px 0;">&copy; 2026 Ugurbocegi - Tüm Hakları Saklıdır</p>
+            <p style="margin: 10px 0;">
+                📞 <a href="tel:905553947289" style="color: white; text-decoration: none;">0555 394 7289</a> | 
+                📱 <a href="https://wa.me/905553947289" target="_blank" style="color: #25d366; text-decoration: none; font-weight: 600;">WhatsApp</a>
+            </p>
+        </div>
     </footer>
 
     <script src="js/utils.js"></script>
