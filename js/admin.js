@@ -30,93 +30,13 @@ const defaultSettings = {
 // Ayarları yükle (yoksa varsayılan kullan)
 function loadSettings() {
     const saved = localStorage.getItem("siteSettings");
-    return saved ? JSON.parse(saved) : defaultSettings;
-}
-
-// ---------------------------
-// JSON İNDİRME YARDIMCISI
-// ---------------------------
-function downloadJSON(filename, data){
-    try{
-        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = filename;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-    }catch(e){
-        console.error('JSON indirilemedi', e);
-    }
-}
-
-// ===========================
-// GİRİŞ / ÇIKIŞ
-// ===========================
-
-function adminLogin() {
-    const password = document.getElementById("password").value;
-
-    if (password === "") {
-        alert("Şifre alanını doldurun!");
-        return;
+    if (saved) {
+        try { applySettingsToForm(JSON.parse(saved)); } catch(e) { /* ignore parse errors */ }
     }
 
-    if (password !== ADMIN_PASSWORD) {
-        alert("Şifre yanlış!");
-        return;
-    }
-
-    document.getElementById("loginForm").style.display = "none";
-    document.getElementById("adminPanel").style.display = "block";
-    loadSettingsForm();
-    loadProducts();
-}
-
-function adminLogout() {
-    if (confirm("Çıkış yapmak istediğinize emin misiniz?")) {
-        document.getElementById("loginForm").style.display = "block";
-        document.getElementById("adminPanel").style.display = "none";
-        document.getElementById("password").value = "";
-    }
-}
-
-window.adminLogin = adminLogin;
-window.adminLogout = adminLogout;
-
-// ===========================
-// TAB KONTROL
-// ===========================
-
-function switchTab(tabName) {
-    // Tüm sekmeler gizle
-    const contents = document.querySelectorAll(".tab-content");
-    contents.forEach(el => el.classList.remove("active"));
-
-    // Tüm butonları pasif yap
-    const buttons = document.querySelectorAll(".tab-btn");
-    buttons.forEach(el => el.classList.remove("active"));
-
-    // Seçili sekmeyi göster
-    document.getElementById(tabName).classList.add("active");
-    
-    // Seçili butonu aktif yap
-    try{
-      event.target.closest(".tab-btn").classList.add("active");
-    }catch(e){/* ignore */}
-}
-
-window.switchTab = switchTab;
-
-// ===========================
-// AYARLAR
-// ===========================
-
-function loadSettingsForm() {
-    // Önce repodan settings.json çekmeyi dene — varsa localStorage'a kaydet
-    fetch('settings.json')
+    // Önce repodan settings.json çekmeyi dene — varsa localStorage'a kaydet (cache-bust)
+    const url = 'settings.json?ts=' + Date.now();
+    fetch(url, { cache: 'no-store' })
       .then(res => {
         if(!res.ok) throw new Error('settings.json bulunamadı');
         return res.json();
@@ -126,8 +46,7 @@ function loadSettingsForm() {
         applySettingsToForm(remoteSettings);
       })
       .catch(() => {
-        const settings = loadSettings();
-        applySettingsToForm(settings);
+        // hata durumunda zaten localStorage'dan alınmış olan değeri gösteriyoruz
       });
 }
 
@@ -186,7 +105,7 @@ window.saveSettings = saveSettings;
 // ===========================
 
 function saveCampaign() {
-    const settings = loadSettings();
+    const settings = JSON.parse(localStorage.getItem("siteSettings")) || defaultSettings;
     
     settings.campaignTitle = document.getElementById("campaignTitle").value;
     settings.campaignDescription = document.getElementById("campaignDescription").value;
@@ -216,8 +135,7 @@ window.saveCampaign = saveCampaign;
 // ÜRÜNLER
 // ===========================
 
-function loadProducts() {
-    const products = JSON.parse(localStorage.getItem("products")) || [];
+function renderProductsList(products) {
     const list = document.getElementById("productsList");
     list.innerHTML = "";
 
@@ -239,6 +157,31 @@ function loadProducts() {
         </div>
         `;
     });
+}
+
+function loadProducts(skipRemoteFetch){
+    const products = JSON.parse(localStorage.getItem("products")) || [];
+    renderProductsList(products);
+
+    if(skipRemoteFetch) return;
+
+    // Remote'dan güncel products.json'ı almaya çalış (cache-bust)
+    const purl = 'products.json?ts=' + Date.now();
+    fetch(purl, { cache: 'no-store' })
+      .then(res => {
+        if(!res.ok) throw new Error('products.json bulunamadı');
+        return res.json();
+      })
+      .then(remoteProducts => {
+        try{ localStorage.setItem('products', JSON.stringify(remoteProducts)); }catch(e){}
+        // Eğer remote farklıysa yeniden render et (ikinci çağrıda skipRemoteFetch=true)
+        if (JSON.stringify(remoteProducts) !== JSON.stringify(products)){
+            loadProducts(true);
+        }
+      })
+      .catch(() => {
+        // ignore fetch errors
+      });
 }
 
 window.loadProducts = loadProducts;
